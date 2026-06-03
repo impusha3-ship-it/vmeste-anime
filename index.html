@@ -279,7 +279,21 @@ input:focus{border-color:var(--meadow);box-shadow:0 0 0 4px rgba(143,194,138,.25
 /* together / hearts */
 .together{text-align:center}
 .daycount{font-family:var(--serif);font-weight:700;font-size:4rem;color:var(--sunset);line-height:1}
-.heart-row{font-size:1.6rem;margin:14px 0}
+.heart-row{display:flex;gap:12px;justify-content:center;align-items:center;margin:18px 0}
+.aheart{width:34px;height:32px;filter:drop-shadow(0 4px 6px rgba(150,60,90,.3));
+  animation:beat 1.6s ease-in-out infinite}
+.aheart.m{--ahf:url(#ahMeadow);filter:drop-shadow(0 4px 6px rgba(70,100,55,.3))}
+.aheart:nth-child(2){animation-delay:.2s}.aheart:nth-child(3){animation-delay:.4s}
+.aheart:nth-child(4){animation-delay:.6s}.aheart:nth-child(5){animation-delay:.8s}
+@keyframes beat{0%,100%{transform:scale(1)}15%{transform:scale(1.22)}30%{transform:scale(1)}45%{transform:scale(1.12)}}
+/* anime heart badge on unlocked achievements */
+.ach{position:relative}
+.ach .badge{position:absolute;top:12px;right:12px;width:22px;height:21px;animation:beat 1.8s ease-in-out infinite;
+  filter:drop-shadow(0 3px 4px rgba(150,60,90,.35))}
+.ach .badge.m{--ahf:url(#ahMeadow)}
+.ach .ic{position:relative;overflow:visible}
+.ach .ic::after{content:'';position:absolute;top:-3px;right:-3px;width:9px;height:9px;border-radius:50%;
+  background:radial-gradient(circle,#fff,rgba(255,255,255,0) 70%);opacity:.9}
 
 /* question */
 .q-card{text-align:center;padding:40px 30px}
@@ -359,6 +373,17 @@ footer{position:fixed;bottom:8px;width:100%;text-align:center;font-size:.78rem;c
       <stop offset="0%" stop-color="#9fb87f"/><stop offset="100%" stop-color="#7f9d63"/></linearGradient>
     <linearGradient id="hillC" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#6f8d54"/><stop offset="100%" stop-color="#4f6e3f"/></linearGradient>
+    <!-- anime hearts -->
+    <linearGradient id="ahRose" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ff9dc0"/><stop offset="55%" stop-color="#f2719c"/><stop offset="100%" stop-color="#d8557f"/></linearGradient>
+    <linearGradient id="ahMeadow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#bfe09a"/><stop offset="55%" stop-color="#8aa86a"/><stop offset="100%" stop-color="#5d7d4c"/></linearGradient>
+    <symbol id="ah" viewBox="0 0 36 34">
+      <path d="M18 31.5C6 23 2 16.5 2 10.6 2 5.6 6 2 10.8 2c3 0 5.6 1.6 7.2 4.2C19.6 3.6 22.2 2 25.2 2 30 2 34 5.6 34 10.6c0 5.9-4 12.4-16 20.9Z"
+        fill="var(--ahf,url(#ahRose))" stroke="#7a3550" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M9 9c1.5-2.6 5-3 7-1.2" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" opacity=".7"/>
+      <circle cx="24.5" cy="11" r="2.2" fill="#fff" opacity=".55"/>
+    </symbol>
   </defs>
 </svg>
 
@@ -523,7 +548,13 @@ footer{position:fixed;bottom:8px;width:100%;text-align:center;font-size:.78rem;c
     <div class="card together">
       <div class="daycount" id="daycount">…</div>
       <div class="muted">дней вместе</div>
-      <div class="heart-row">💚 🤍 💚 🤍 💚</div>
+      <div class="heart-row">
+        <svg class="aheart m"><use href="#ah"/></svg>
+        <svg class="aheart"><use href="#ah"/></svg>
+        <svg class="aheart m"><use href="#ah"/></svg>
+        <svg class="aheart"><use href="#ah"/></svg>
+        <svg class="aheart m"><use href="#ah"/></svg>
+      </div>
       <p class="muted" id="since-line">с <b>—</b></p>
     </div>
   </section>
@@ -789,11 +820,12 @@ async function loadLive(){
   if(sm)sm.innerHTML='Открыто <b>'+unlocked+'</b> из '+total;
   const ag=document.getElementById('ach-grid');
   if(ag){ag.innerHTML='';
+    const badge='<svg class="badge"><use href="#ah"/></svg>';
     ACHS.forEach(a=>{const on=!!achObj[a.id];
       ag.insertAdjacentHTML('beforeend',
-        '<div class="card ach'+(on?'':' locked')+'"><div class="ic">'+(a.icon||'🏅')+'</div><h3>'+esc(a.title)+'</h3><p class="muted">'+(on?'открыто':'впереди')+'</p></div>');});
+        '<div class="card ach'+(on?'':' locked')+'">'+(on?badge:'')+'<div class="ic">'+(a.icon||'🏅')+'</div><h3>'+esc(a.title)+'</h3><p class="muted">'+(on?'открыто':'впереди')+'</p></div>');});
     customArr.forEach(c=>{ag.insertAdjacentHTML('beforeend',
-      '<div class="card ach"><div class="ic">✨</div><h3>'+esc(c.title)+'</h3><p class="muted">своя · '+esc(c.cat||'')+'</p></div>');});
+      '<div class="card ach"><svg class="badge m"><use href="#ah"/></svg><div class="ic"><svg viewBox="0 0 36 34" width="30" height="28"><use href="#ah"/></svg></div><h3>'+esc(c.title)+'</h3><p class="muted">своя · '+esc(c.cat||'')+'</p></div>');});
   }
 
   // --- pet (xp -> level) ---
