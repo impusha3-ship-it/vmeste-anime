@@ -129,6 +129,32 @@ body.night input{background:rgba(40,52,84,.6);color:#e8ecf2;border-color:rgba(15
 
 .wrap{position:relative;z-index:5}
 
+/* ====== GHIBLI DECORATIONS ====== */
+/* bird flock drifting across the sky */
+.birds{position:fixed;top:18%;left:-12%;z-index:1;pointer-events:none;opacity:.55;
+  animation:birds-fly 48s linear infinite}
+.birds.b2{top:30%;transform:scale(.7);opacity:.4;animation-duration:64s;animation-delay:-20s}
+@keyframes birds-fly{from{transform:translateX(0)}to{transform:translateX(130vw)}}
+.birds path{animation:flap 1.1s ease-in-out infinite}
+.birds path:nth-child(2){animation-delay:.15s}.birds path:nth-child(3){animation-delay:.3s}
+.birds path:nth-child(4){animation-delay:.1s}.birds path:nth-child(5){animation-delay:.25s}
+@keyframes flap{50%{transform:translateY(-1.5px) scaleX(.85)}}
+/* kodama — little forest spirits resting near the grass */
+.kodama{position:fixed;bottom:46px;z-index:2;pointer-events:none;width:42px;height:60px;
+  filter:drop-shadow(0 6px 6px rgba(60,74,70,.2));animation:kodama-bob 5s ease-in-out infinite}
+.kodama .head{transform-origin:50% 80%;animation:kodama-tilt 4s ease-in-out infinite}
+@keyframes kodama-bob{50%{transform:translateY(-5px)}}
+@keyframes kodama-tilt{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(6deg)}}
+body.night .kodama{filter:drop-shadow(0 0 8px rgba(180,210,255,.5)) drop-shadow(0 6px 6px rgba(20,30,60,.4))}
+/* leafy corner ornaments framing the screen */
+.corner-deco{position:fixed;z-index:4;pointer-events:none;width:200px;height:200px;opacity:.42;
+  filter:drop-shadow(0 4px 6px rgba(60,74,70,.15))}
+.corner-deco.tl{top:-20px;left:-20px}
+.corner-deco.br{bottom:-20px;right:-20px;transform:rotate(180deg)}
+.corner-deco .lf{transform-origin:0 0;animation:leaf-sway 6s ease-in-out infinite}
+@keyframes leaf-sway{50%{transform:rotate(3deg)}}
+@media(max-width:640px){.corner-deco{width:120px;opacity:.32}}
+
 /* ====== INTRO SPLASH ====== */
 .splash{position:fixed;inset:0;z-index:90;display:flex;flex-direction:column;align-items:center;justify-content:center;
   background:linear-gradient(180deg,#5b9bc4,#9cc6dd 45%,#f3ecd6);overflow:hidden;
@@ -208,15 +234,18 @@ input:focus{border-color:var(--meadow);box-shadow:0 0 0 4px rgba(143,194,138,.25
 
 /* ====== APP ====== */
 #app{display:none}
-.nav{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:14px;padding:12px 22px;
-  background:rgba(251,244,227,.82);backdrop-filter:blur(12px);border-bottom:2px solid rgba(255,255,255,.6);
-  flex-wrap:wrap}
+.nav{position:sticky;top:14px;z-index:30;display:flex;align-items:center;gap:14px;padding:11px 18px;
+  margin:14px auto 0;max-width:1080px;width:calc(100% - 28px);border-radius:24px;
+  background:linear-gradient(180deg,rgba(255,255,255,.5),rgba(251,244,227,.85));backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,.8);flex-wrap:wrap;
+  box-shadow:0 1px 0 rgba(255,255,255,.7) inset, 0 18px 40px -18px rgba(58,74,71,.5)}
 .nav-logo{font-family:var(--serif);font-weight:700;font-size:1.5rem;color:var(--meadow-dk)}
 .nav-logo em{font-style:normal;color:var(--sunset)}
 .nav-tabs{display:flex;gap:6px;flex-wrap:wrap;flex:1}
 .nav-tab{position:relative;font-family:var(--body);font-weight:700;font-size:.92rem;border:none;background:transparent;
   color:var(--ink-soft);padding:9px 16px;border-radius:14px;cursor:pointer;
   transition:color .3s, background .3s, transform .3s cubic-bezier(.2,.9,.3,1.3)}
+.nav-tab .ti{margin-right:6px;font-size:.95em}
 .nav-tab:hover{background:rgba(255,255,255,.55);color:var(--ink);transform:translateY(-1px)}
 .nav-tab.active{color:#fff;transform:translateY(-1px);
   background:linear-gradient(135deg,#f3c98a,var(--peach) 45%,var(--sunset));
@@ -323,11 +352,21 @@ input:focus{border-color:var(--meadow);box-shadow:0 0 0 4px rgba(143,194,138,.25
 .letter::before{content:'✉';position:absolute;top:-14px;right:18px;font-size:1.6rem}
 
 /* photos */
-.photos{columns:3;column-gap:14px}
-.photos .ph{break-inside:avoid;margin-bottom:14px;border-radius:18px;overflow:hidden;box-shadow:var(--shadow);
-  background:#fff;border:6px solid #fff;transition:.3s;cursor:pointer}
-.photos .ph:hover{transform:rotate(-2deg) scale(1.03)}
-.photos .ph svg{aspect-ratio:1;height:auto}
+.photos{columns:3;column-gap:18px}
+.photos .ph{position:relative;break-inside:avoid;margin-bottom:20px;border-radius:6px;
+  background:#fffdf7;padding:10px 10px 30px;box-shadow:0 12px 26px -12px rgba(58,74,71,.55),0 2px 6px rgba(58,74,71,.12);
+  border:1px solid rgba(0,0,0,.04);transition:transform .35s cubic-bezier(.2,.9,.3,1.2),box-shadow .35s;cursor:pointer}
+.photos .ph:nth-child(3n){transform:rotate(-2.2deg)}
+.photos .ph:nth-child(3n+1){transform:rotate(1.6deg)}
+.photos .ph:nth-child(3n+2){transform:rotate(-.8deg)}
+.photos .ph::before{content:'';position:absolute;top:-9px;left:50%;transform:translateX(-50%) rotate(-3deg);
+  width:54px;height:18px;background:linear-gradient(180deg,rgba(230,218,184,.85),rgba(214,200,160,.7));
+  border-radius:2px;box-shadow:0 2px 4px rgba(58,74,71,.15)}
+.photos .ph::after{content:'🍃';position:absolute;bottom:7px;left:0;right:0;text-align:center;
+  font-family:var(--hand);font-size:.95rem;color:var(--ink-soft)}
+.photos .ph:hover{transform:rotate(0deg) scale(1.05);z-index:6;
+  box-shadow:0 22px 40px -14px rgba(58,74,71,.6)}
+.photos .ph img,.photos .ph svg{display:block;width:100%;aspect-ratio:1;height:auto;object-fit:cover;border-radius:3px}
 
 /* music */
 .track{display:flex;align-items:center;gap:14px;padding:12px;border-radius:16px;background:rgba(255,255,255,.6);margin-bottom:10px;transition:.2s}
@@ -408,6 +447,36 @@ footer{position:fixed;bottom:8px;width:100%;text-align:center;font-size:.78rem;c
   </svg>
 </div>
 <div class="grass" id="grass"></div>
+<!-- bird flock -->
+<svg class="birds" width="120" height="40" viewBox="0 0 120 40">
+  <g fill="none" stroke="#5a6b6f" stroke-width="2.4" stroke-linecap="round">
+    <path d="M6 20 Q12 12 18 20"/><path d="M30 14 Q36 6 42 14"/><path d="M54 22 Q60 14 66 22"/>
+    <path d="M80 16 Q86 8 92 16"/><path d="M104 24 Q110 16 116 24"/>
+  </g>
+</svg>
+<svg class="birds b2" width="120" height="40" viewBox="0 0 120 40">
+  <g fill="none" stroke="#5a6b6f" stroke-width="2.4" stroke-linecap="round">
+    <path d="M6 20 Q12 12 18 20"/><path d="M30 14 Q36 6 42 14"/><path d="M54 22 Q60 14 66 22"/>
+    <path d="M80 16 Q86 8 92 16"/><path d="M104 24 Q110 16 116 24"/>
+  </g>
+</svg>
+<!-- kodama forest spirits -->
+<svg class="kodama" style="left:5%" viewBox="0 0 42 60">
+  <g class="head">
+    <ellipse cx="21" cy="20" rx="15" ry="17" fill="#f3f1e8" stroke="#cdd2c8" stroke-width="1"/>
+    <circle cx="15" cy="18" r="2.4" fill="#2f3a37"/><circle cx="27" cy="18" r="2.4" fill="#2f3a37"/>
+    <ellipse cx="21" cy="26" rx="2.6" ry="2" fill="#2f3a37"/>
+  </g>
+  <rect x="16" y="34" width="10" height="24" rx="5" fill="#eceae0" stroke="#cdd2c8" stroke-width="1"/>
+</svg>
+<svg class="kodama" style="right:7%;animation-delay:-2s" viewBox="0 0 42 60">
+  <g class="head" style="animation-delay:-1.5s">
+    <ellipse cx="21" cy="20" rx="13" ry="15" fill="#f3f1e8" stroke="#cdd2c8" stroke-width="1"/>
+    <circle cx="16" cy="18" r="2.2" fill="#2f3a37"/><circle cx="26" cy="18" r="2.2" fill="#2f3a37"/>
+    <ellipse cx="21" cy="25" rx="2.4" ry="1.8" fill="#2f3a37"/>
+  </g>
+  <rect x="16" y="32" width="9" height="26" rx="4.5" fill="#eceae0" stroke="#cdd2c8" stroke-width="1"/>
+</svg>
 <div class="wash w1"></div><div class="wash w2"></div><div class="wash w3"></div>
 <div class="atmos"></div>
 <div class="rays"></div>
@@ -415,6 +484,27 @@ footer{position:fixed;bottom:8px;width:100%;text-align:center;font-size:.78rem;c
 <div class="moon"></div>
 <div class="stars" id="stars"></div>
 <div class="vignette"></div>
+<!-- leafy corner ornaments -->
+<svg class="corner-deco tl" viewBox="0 0 200 200">
+  <g class="lf" fill="#6f8d54">
+    <path d="M0 0 Q70 20 120 70" stroke="#5d7d4c" stroke-width="3" fill="none"/>
+    <path d="M30 18 Q55 8 72 30 Q50 40 30 18Z"/>
+    <path d="M58 38 Q86 30 104 54 Q78 62 58 38Z" fill="#7f9d63"/>
+    <path d="M14 40 Q34 36 46 58 Q24 64 14 40Z" fill="#8aa86a"/>
+    <path d="M86 64 Q112 60 126 84 Q102 92 86 64Z" fill="#6f8d54"/>
+    <ellipse cx="120" cy="74" rx="6" ry="6" fill="#dd8f6b"/>
+  </g>
+</svg>
+<svg class="corner-deco br" viewBox="0 0 200 200">
+  <g class="lf" fill="#6f8d54">
+    <path d="M0 0 Q70 20 120 70" stroke="#5d7d4c" stroke-width="3" fill="none"/>
+    <path d="M30 18 Q55 8 72 30 Q50 40 30 18Z"/>
+    <path d="M58 38 Q86 30 104 54 Q78 62 58 38Z" fill="#7f9d63"/>
+    <path d="M14 40 Q34 36 46 58 Q24 64 14 40Z" fill="#8aa86a"/>
+    <path d="M86 64 Q112 60 126 84 Q102 92 86 64Z" fill="#6f8d54"/>
+    <ellipse cx="120" cy="74" rx="6" ry="6" fill="#f0c98a"/>
+  </g>
+</svg>
 <svg class="grain" preserveAspectRatio="none"><filter id="g"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="linear" slope="0.5"/></feComponentTransfer></filter><rect width="100%" height="100%" filter="url(#g)"/></svg>
 <!-- watercolour-paper fibre wash -->
 <svg class="paper" preserveAspectRatio="none"><filter id="pap"><feTurbulence type="fractalNoise" baseFrequency="0.012 0.16" numOctaves="3" seed="11" stitchTiles="stitch"/><feColorMatrix type="matrix" values="0 0 0 0 0.86  0 0 0 0 0.79  0 0 0 0 0.6  0 0 0 0.9 0"/></filter><rect width="100%" height="100%" filter="url(#pap)"/></svg>
@@ -923,13 +1013,14 @@ function pick(name){
 function logout(){localStorage.removeItem('anime_user');location.reload();}
 
 // ---- nav ----
-const PAGES=[['calendar','Календарь'],['together','Вместе'],['question','Вопрос дня'],
-['tier','Тирлисты'],['pet','Питомец'],['letters','Письма'],['photos','Фото'],
-['music','Музыка'],['achievements','Ачивки'],['stats','Статистика']];
+const PAGES=[['calendar','Календарь','🗓️'],['together','Вместе','💞'],['question','Вопрос дня','🌿'],
+['tier','Тирлисты','🍓'],['pet','Питомец','🌰'],['letters','Письма','✉️'],['photos','Фото','🎞️'],
+['music','Музыка','🎵'],['achievements','Ачивки','⭐'],['stats','Статистика','📊']];
 function buildTabs(){
   const t=document.getElementById('tabs');t.innerHTML='';
   PAGES.forEach((p,i)=>{const b=document.createElement('button');
-    b.className='nav-tab'+(i===0?' active':'');b.textContent=p[1];
+    b.className='nav-tab'+(i===0?' active':'');
+    b.innerHTML='<span class="ti">'+p[2]+'</span>'+p[1];
     b.onclick=()=>showPage(p[0],b);t.appendChild(b);});
   const a=document.querySelector('.page.active');if(a)revealPage(a);
 }
