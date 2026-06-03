@@ -245,7 +245,13 @@ input:focus{border-color:var(--meadow);box-shadow:0 0 0 4px rgba(143,194,138,.25
 .nav-tab{position:relative;font-family:var(--body);font-weight:700;font-size:.92rem;border:none;background:transparent;
   color:var(--ink-soft);padding:9px 16px;border-radius:14px;cursor:pointer;
   transition:color .3s, background .3s, transform .3s cubic-bezier(.2,.9,.3,1.3)}
-.nav-tab .ti{margin-right:6px;font-size:.95em}
+.nav-tab .ti{margin-right:7px;display:inline-flex;vertical-align:-4px}
+.nav-tab .ti svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;
+  stroke-linecap:round;stroke-linejoin:round}
+.icon-btn svg{width:19px;height:19px;stroke:#3a4a47;fill:none;stroke-width:1.8;
+  stroke-linecap:round;stroke-linejoin:round;display:block}
+body.night .icon-btn svg{stroke:#cfe0ff}
+.icon-btn.on svg{stroke:var(--sunset)}
 .nav-tab:hover{background:rgba(255,255,255,.55);color:var(--ink);transform:translateY(-1px)}
 .nav-tab.active{color:#fff;transform:translateY(-1px);
   background:linear-gradient(135deg,#f3c98a,var(--peach) 45%,var(--sunset));
@@ -651,10 +657,10 @@ footer{position:fixed;bottom:8px;width:100%;text-align:center;font-size:.78rem;c
   <div class="nav">
     <div class="nav-logo">О <em>&</em> Д</div>
     <div class="nav-tabs" id="tabs"></div>
-    <button class="icon-btn" id="music-btn" onclick="toggleMusic()" title="Мелодия" aria-label="Вкл/выкл мелодию">🎵</button>
-    <button class="icon-btn" id="night-btn" onclick="toggleNight()" title="День / Ночь" aria-label="Переключить день/ночь">🌙</button>
-    <button class="icon-btn" id="sound-btn" onclick="toggleSound()" title="Звук" aria-label="Вкл/выкл звук">🔊</button>
-    <button class="icon-btn" onclick="logout()" title="Выйти" aria-label="Выйти">🚪</button>
+    <button class="icon-btn" id="music-btn" onclick="toggleMusic()" title="Мелодия" aria-label="Вкл/выкл мелодию"></button>
+    <button class="icon-btn" id="night-btn" onclick="toggleNight()" title="День / Ночь" aria-label="Переключить день/ночь"></button>
+    <button class="icon-btn" id="sound-btn" onclick="toggleSound()" title="Звук" aria-label="Вкл/выкл звук"></button>
+    <button class="icon-btn" id="logout-btn" onclick="logout()" title="Выйти" aria-label="Выйти"></button>
   </div>
 
   <!-- Календарь -->
@@ -815,11 +821,10 @@ footer{position:fixed;bottom:8px;width:100%;text-align:center;font-size:.78rem;c
 function toggleNight(){
   const on=document.body.classList.toggle('night');
   localStorage.setItem('anime_night',on?'on':'off');
-  const b=document.getElementById('night-btn');if(b)b.textContent=on?'☀️':'🌙';
+  const b=document.getElementById('night-btn');if(b)b.innerHTML=svgIcon(on?'sun':'moon');
   if(typeof Snd!=='undefined')Snd.soft();
 }
-(function(){if(localStorage.getItem('anime_night')==='on'){document.body.classList.add('night');
-  const b=document.getElementById('night-btn');if(b)b.textContent='☀️';}})();
+(function(){if(localStorage.getItem('anime_night')==='on')document.body.classList.add('night');})();
 
 // ====== BACKGROUND MELODY (Hisaishi-esque, procedural) ======
 const Music=(function(){
@@ -857,12 +862,12 @@ const Music=(function(){
 })();
 function toggleMusic(){
   const b=document.getElementById('music-btn');
-  if(Music.playing){Music.stop();if(b)b.textContent='🎵';localStorage.setItem('anime_music','off');}
-  else{Music.start();if(b)b.textContent='🎶';localStorage.setItem('anime_music','on');}
+  if(Music.playing){Music.stop();if(b){b.innerHTML=svgIcon('noteOff');b.classList.remove('on');}localStorage.setItem('anime_music','off');}
+  else{Music.start();if(b){b.innerHTML=svgIcon('noteOn');b.classList.add('on');}localStorage.setItem('anime_music','on');}
 }
 // resume preferred music on first user gesture (autoplay policy)
 (function(){if(localStorage.getItem('anime_music')==='on'){
-  const go=()=>{Music.start();const b=document.getElementById('music-btn');if(b)b.textContent='🎶';
+  const go=()=>{Music.start();const b=document.getElementById('music-btn');if(b){b.innerHTML=svgIcon('noteOn');b.classList.add('on');}
     document.removeEventListener('click',go);};
   document.addEventListener('click',go);
 }})();
@@ -1106,16 +1111,47 @@ function pick(name){
 function logout(){localStorage.removeItem('anime_user');location.reload();}
 
 // ---- nav ----
-const PAGES=[['calendar','Календарь','🗓️'],['together','Вместе','💞'],['question','Вопрос дня','🌿'],
-['tier','Тирлисты','🍓'],['pet','Питомец','🌰'],['letters','Письма','✉️'],['photos','Фото','🎞️'],
-['music','Музыка','🎵'],['achievements','Ачивки','⭐'],['stats','Статистика','📊']];
+// hand-drawn line icon set (viewBox 24)
+const ICONS={
+  calendar:'<rect x="3" y="4.5" width="18" height="16" rx="3"/><path d="M3 9h18M8 3v4M16 3v4"/><path d="M7.5 13q1-1.2 2 0M12 13q1-1.2 2 0"/>',
+  together:'<path d="M12 20s-7-4.6-7-9.4A3.6 3.6 0 0 1 12 8a3.6 3.6 0 0 1 7-2.6c0 4.8-7 14.6-7 14.6Z"/><path d="M8.5 8.5q1.2-1.6 2.8-1"/>',
+  question:'<path d="M12 21c5-3 8-6.5 8-11a4 4 0 0 0-8-1 4 4 0 0 0-8 1c0 4.5 3 8 8 11Z" opacity=".0"/><path d="M12 21V9"/><path d="M12 12C9 12 6 9.5 6 6c3 0 6 2 6 6Z"/><path d="M12 14c3 0 6-2 6-5-3 0-6 1.8-6 5Z"/>',
+  tier:'<path d="M5 21V11M12 21V5M19 21v-7"/><path d="M3 21h18"/>',
+  pet:'<circle cx="8" cy="9" r="1.8"/><circle cx="16" cy="9" r="1.8"/><circle cx="5.5" cy="13.5" r="1.6"/><circle cx="18.5" cy="13.5" r="1.6"/><path d="M12 13c-2.4 0-4.5 2-4.5 4.2C7.5 19 9.5 19.5 12 19.5s4.5-.5 4.5-2.3C16.5 15 14.4 13 12 13Z"/>',
+  letters:'<rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M4 7l8 6 8-6"/>',
+  photos:'<rect x="3" y="5" width="18" height="14" rx="2.5"/><circle cx="9" cy="10" r="2"/><path d="M4 18l5-4 4 3 3-2.5 4 3.5"/>',
+  music:'<path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/>',
+  achievements:'<path d="M12 3.5l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 16l-4.8 2.5.9-5.4L4.2 9.2l5.4-.8Z"/>',
+  stats:'<path d="M4 20V4"/><path d="M4 20h16"/><rect x="7" y="12" width="3" height="5" rx="1"/><rect x="12" y="8" width="3" height="9" rx="1"/><rect x="17" y="5" width="3" height="12" rx="1"/>',
+  // controls
+  noteOn:'<path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/>',
+  noteOff:'<path d="M9 18V6l10-2v6"/><circle cx="6.5" cy="18" r="2.5"/><path d="M4 4l16 16"/>',
+  moon:'<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z"/>',
+  sun:'<circle cx="12" cy="12" r="4.2"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6L17 7M7 17l-1.4 1.4"/>',
+  soundOn:'<path d="M4 9v6h4l5 4V5L8 9Z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8 8 0 0 1 0 12"/>',
+  soundOff:'<path d="M4 9v6h4l5 4V5L8 9Z"/><path d="M22 9l-6 6M16 9l6 6"/>',
+  logout:'<path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3"/><path d="M10 12h10M16 8l4 4-4 4"/>'
+};
+function svgIcon(k){return '<svg viewBox="0 0 24 24" aria-hidden="true">'+(ICONS[k]||'')+'</svg>';}
+
+const PAGES=[['calendar','Календарь'],['together','Вместе'],['question','Вопрос дня'],
+['tier','Тирлисты'],['pet','Питомец'],['letters','Письма'],['photos','Фото'],
+['music','Музыка'],['achievements','Ачивки'],['stats','Статистика']];
 function buildTabs(){
   const t=document.getElementById('tabs');t.innerHTML='';
   PAGES.forEach((p,i)=>{const b=document.createElement('button');
     b.className='nav-tab'+(i===0?' active':'');
-    b.innerHTML='<span class="ti">'+p[2]+'</span>'+p[1];
+    b.innerHTML='<span class="ti">'+svgIcon(p[0])+'</span>'+p[1];
     b.onclick=()=>showPage(p[0],b);t.appendChild(b);});
   const a=document.querySelector('.page.active');if(a)revealPage(a);
+  // set initial control-button icons
+  setCtrlIcons();
+}
+function setCtrlIcons(){
+  const m=document.getElementById('music-btn');if(m)m.innerHTML=svgIcon(Music.playing?'noteOn':'noteOff');
+  const n=document.getElementById('night-btn');if(n)n.innerHTML=svgIcon(document.body.classList.contains('night')?'sun':'moon');
+  const s=document.getElementById('sound-btn');if(s)s.innerHTML=svgIcon((typeof Snd!=='undefined'&&Snd.on)?'soundOn':'soundOff');
+  const l=document.getElementById('logout-btn');if(l)l.innerHTML=svgIcon('logout');
 }
 function revealPage(pg){
   const items=pg.querySelectorAll('.card,.letter');
@@ -1220,8 +1256,8 @@ const Snd=(function(){
     get on(){return on;}
   };
 })();
-function toggleSound(){const on=Snd.toggle();const b=document.getElementById('sound-btn');if(b)b.textContent=on?'🔊':'🔇';}
-(function(){const b=document.getElementById('sound-btn');if(b)b.textContent=Snd.on?'🔊':'🔇';})();
+function toggleSound(){const on=Snd.toggle();const b=document.getElementById('sound-btn');
+  if(b){b.innerHTML=svgIcon(on?'soundOn':'soundOff');b.classList.toggle('on',on);}}
 // delegated click sounds on interactive elements
 document.addEventListener('click',e=>{
   const t=e.target.closest('.btn,.nav-tab,.who,.icon-btn,.track,.ph,.cal .day,.ach');
