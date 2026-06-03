@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Вместе · Ghibli</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;700&family=Nunito:ital,wght@0,400;0,600;0,800;1,400&family=Marck+Script&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sky-top:#aee0f5; --sky-mid:#cfeef7; --sky-low:#fdf3df;
+  --cream:#fbf4e3; --cream-2:#f5ead0;
+  --ink:#3f4a52; --ink-soft:#6a7780;
+  --meadow:#8fc28a; --meadow-dk:#5f9d6a;
+  --peach:#f5b985; --sunset:#f29e8e; --rose:#e88aa0;
+  --totoro:#8e9aa6; --totoro-dk:#5f6b78;
+  --gold:#e8b95a;
+  --card:rgba(255,255,255,.72);
+  --shadow:0 18px 40px -18px rgba(63,74,82,.45);
+  --radius:26px;
+  --serif:'Comfortaa',cursive; --body:'Nunito',sans-serif; --hand:'Marck Script',cursive;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:var(--body); color:var(--ink);
+  background:linear-gradient(180deg,var(--sky-top) 0%,var(--sky-mid) 42%,var(--sky-low) 100%);
+  min-height:100vh; overflow-x:hidden; position:relative;
+}
+/* ====== SKY / SCENERY ====== */
+.sky{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.sun{position:absolute;top:8%;right:12%;width:120px;height:120px;border-radius:50%;
+  background:radial-gradient(circle,#fff5d6 0%,#ffe49c 55%,rgba(255,228,156,0) 72%);
+  filter:blur(2px);animation:sun-pulse 9s ease-in-out infinite}
+@keyframes sun-pulse{50%{transform:scale(1.08);opacity:.9}}
+.cloud{position:absolute;opacity:.9;filter:drop-shadow(0 10px 14px rgba(120,150,170,.18))}
+.cloud.c1{top:14%;animation:drift 60s linear infinite}
+.cloud.c2{top:30%;transform:scale(.7);animation:drift 85s linear infinite;animation-delay:-20s;opacity:.7}
+.cloud.c3{top:50%;transform:scale(1.2);animation:drift 110s linear infinite;animation-delay:-50s;opacity:.55}
+@keyframes drift{from{left:-25%}to{left:120%}}
+.hills{position:absolute;bottom:0;left:0;width:100%;z-index:1}
+.grass{position:fixed;bottom:0;left:0;width:100%;height:70px;z-index:1;pointer-events:none}
+.grass i{position:absolute;bottom:0;width:8px;height:34px;background:linear-gradient(var(--meadow),var(--meadow-dk));
+  border-radius:50% 50% 0 0;transform-origin:bottom center;animation:sway 4s ease-in-out infinite}
+/* soot sprites */
+.soot{position:fixed;width:18px;height:18px;border-radius:50%;background:#33373d;z-index:2;
+  box-shadow:0 0 0 3px rgba(51,55,61,.25);pointer-events:none;opacity:.0;animation:float-up 14s linear infinite}
+.soot::before,.soot::after{content:'';position:absolute;top:5px;width:5px;height:5px;border-radius:50%;background:#fff}
+.soot::before{left:3px}.soot::after{right:3px}
+@keyframes float-up{
+  0%{transform:translateY(20px) scale(.6);opacity:0}
+  10%{opacity:.85}
+  90%{opacity:.85}
+  100%{transform:translateY(-110vh) translateX(40px) scale(1);opacity:0}
+}
+@keyframes sway{50%{transform:rotate(7deg)}}
+
+.wrap{position:relative;z-index:5}
+
+/* ====== LOGIN ====== */
+.screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.login-card{background:var(--card);backdrop-filter:blur(10px);border:2px solid rgba(255,255,255,.7);
+  border-radius:var(--radius);box-shadow:var(--shadow);padding:48px 40px;max-width:420px;width:100%;
+  text-align:center;animation:rise .8s cubic-bezier(.2,.9,.3,1.2)}
+@keyframes rise{from{opacity:0;transform:translateY(30px) scale(.96)}to{opacity:1;transform:none}}
+.brand{font-family:var(--serif);font-weight:700;font-size:2.6rem;color:var(--meadow-dk);letter-spacing:1px}
+.brand em{font-style:normal;color:var(--sunset)}
+.tag{font-family:var(--hand);font-size:1.5rem;color:var(--ink-soft);margin:6px 0 28px}
+.spirit{width:120px;height:120px;margin:0 auto 14px;display:block;animation:bob 4s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-10px)}}
+.field{position:relative;margin:14px 0}
+input[type=password],input[type=text]{width:100%;padding:15px 18px;border-radius:16px;border:2px solid var(--cream-2);
+  background:rgba(255,255,255,.8);font-family:var(--body);font-size:1rem;color:var(--ink);outline:none;transition:.25s}
+input:focus{border-color:var(--meadow);box-shadow:0 0 0 4px rgba(143,194,138,.25)}
+.btn{font-family:var(--serif);font-weight:600;border:none;cursor:pointer;border-radius:18px;padding:14px 26px;
+  font-size:1rem;color:#fff;background:linear-gradient(135deg,var(--meadow),var(--meadow-dk));
+  box-shadow:0 10px 22px -10px var(--meadow-dk);transition:.25s;width:100%}
+.btn:hover{transform:translateY(-2px);box-shadow:0 16px 28px -10px var(--meadow-dk)}
+.btn:active{transform:translateY(0)}
+.hint{font-size:.82rem;color:var(--ink-soft);margin-top:14px}
+.err{color:#d9695a;font-size:.85rem;height:18px;margin-top:6px}
+
+/* user pick */
+.who-grid{display:flex;gap:22px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+.who{background:rgba(255,255,255,.85);border:2px solid var(--cream-2);border-radius:22px;padding:24px 20px;
+  width:150px;cursor:pointer;transition:.3s;box-shadow:var(--shadow)}
+.who:hover{transform:translateY(-8px) rotate(-1deg);border-color:var(--peach)}
+.who .av{width:84px;height:84px;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;
+  font-size:2.4rem;background:radial-gradient(circle at 35% 30%,#fff,var(--cream-2))}
+.who.olya .av{background:radial-gradient(circle at 35% 30%,#fff,#ffd7e0)}
+.who.dima .av{background:radial-gradient(circle at 35% 30%,#fff,#cfe6ff)}
+.who h3{font-family:var(--serif);font-weight:600}
+
+/* ====== APP ====== */
+#app{display:none}
+.nav{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:14px;padding:12px 22px;
+  background:rgba(251,244,227,.82);backdrop-filter:blur(12px);border-bottom:2px solid rgba(255,255,255,.6);
+  flex-wrap:wrap}
+.nav-logo{font-family:var(--serif);font-weight:700;font-size:1.5rem;color:var(--meadow-dk)}
+.nav-logo em{font-style:normal;color:var(--sunset)}
+.nav-tabs{display:flex;gap:6px;flex-wrap:wrap;flex:1}
+.nav-tab{font-family:var(--body);font-weight:600;font-size:.92rem;border:none;background:transparent;
+  color:var(--ink-soft);padding:9px 15px;border-radius:14px;cursor:pointer;transition:.22s}
+.nav-tab:hover{background:rgba(255,255,255,.6);color:var(--ink)}
+.nav-tab.active{background:linear-gradient(135deg,var(--peach),var(--sunset));color:#fff;
+  box-shadow:0 8px 18px -8px var(--sunset)}
+.icon-btn{border:none;background:rgba(255,255,255,.6);cursor:pointer;border-radius:12px;padding:8px 11px;font-size:1rem;transition:.2s}
+.icon-btn:hover{background:#fff;transform:translateY(-2px)}
+
+.page{max-width:1040px;margin:0 auto;padding:34px 22px 120px;display:none;animation:fade .5s ease}
+.page.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.page-title{font-family:var(--serif);font-weight:700;font-size:2rem;color:var(--meadow-dk);margin-bottom:4px}
+.page-sub{font-family:var(--hand);font-size:1.4rem;color:var(--ink-soft);margin-bottom:24px}
+
+.grid{display:grid;gap:20px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.card{background:var(--card);backdrop-filter:blur(8px);border:2px solid rgba(255,255,255,.65);
+  border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);transition:.3s}
+.card:hover{transform:translateY(-6px)}
+.card h3{font-family:var(--serif);font-weight:600;margin-bottom:10px;color:var(--ink)}
+.muted{color:var(--ink-soft)}
+.pill{display:inline-block;background:var(--cream-2);border-radius:30px;padding:5px 13px;font-size:.82rem;margin:3px 4px 3px 0}
+
+/* calendar */
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+.cal .dow{font-family:var(--serif);font-size:.8rem;text-align:center;color:var(--ink-soft)}
+.cal .day{aspect-ratio:1;border-radius:14px;background:rgba(255,255,255,.6);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;font-size:.9rem;border:2px solid transparent;transition:.2s;cursor:pointer}
+.cal .day:hover{border-color:var(--meadow);transform:scale(1.05)}
+.cal .day.dot{background:linear-gradient(135deg,#fff,var(--cream-2))}
+.cal .day .ev{font-size:.95rem}
+
+/* together / hearts */
+.together{text-align:center}
+.daycount{font-family:var(--serif);font-weight:700;font-size:4rem;color:var(--sunset);line-height:1}
+.heart-row{font-size:1.6rem;margin:14px 0}
+
+/* question */
+.q-card{text-align:center;padding:40px 30px}
+.q-text{font-family:var(--serif);font-weight:500;font-size:1.5rem;color:var(--ink);margin:14px 0 22px}
+.chat{display:flex;flex-direction:column;gap:12px;margin-top:20px;text-align:left}
+.bubble{max-width:78%;padding:12px 16px;border-radius:18px;font-size:.95rem;line-height:1.4}
+.bubble.olya{align-self:flex-start;background:#ffe3ea;border-bottom-left-radius:5px}
+.bubble.dima{align-self:flex-end;background:#d6ecff;border-bottom-right-radius:5px}
+.bubble .nm{font-family:var(--serif);font-size:.75rem;color:var(--ink-soft);display:block;margin-bottom:3px}
+
+/* tier */
+.tier{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.tier .lab{font-family:var(--serif);font-weight:700;color:#fff;width:46px;height:46px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tier .items{display:flex;gap:8px;flex-wrap:wrap}
+.tier .it{background:rgba(255,255,255,.8);border-radius:12px;padding:7px 12px;font-size:.88rem}
+
+/* pet */
+.pet-stage{text-align:center;padding:30px}
+.pet{width:160px;height:160px;margin:0 auto;animation:bob 3.5s ease-in-out infinite}
+.bar{height:14px;border-radius:10px;background:var(--cream-2);overflow:hidden;margin:6px 0}
+.bar span{display:block;height:100%;border-radius:10px;background:linear-gradient(90deg,var(--meadow),var(--meadow-dk))}
+
+/* letters */
+.letter{background:linear-gradient(180deg,#fffdf6,#f7eed6);border-radius:18px;padding:22px;
+  box-shadow:var(--shadow);border:1px solid #ecdfbf;font-family:var(--hand);font-size:1.25rem;line-height:1.5;color:#5a5142;position:relative}
+.letter::before{content:'✉';position:absolute;top:-14px;right:18px;font-size:1.6rem}
+
+/* photos */
+.photos{columns:3;column-gap:14px}
+.photos .ph{break-inside:avoid;margin-bottom:14px;border-radius:18px;overflow:hidden;box-shadow:var(--shadow);
+  background:#fff;border:6px solid #fff;transition:.3s;cursor:pointer}
+.photos .ph:hover{transform:rotate(-2deg) scale(1.03)}
+.photos .ph div{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:2.4rem}
+
+/* music */
+.track{display:flex;align-items:center;gap:14px;padding:12px;border-radius:16px;background:rgba(255,255,255,.6);margin-bottom:10px;transition:.2s}
+.track:hover{background:#fff;transform:translateX(4px)}
+.track .pl{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--rose),var(--sunset));
+  color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+
+/* achievements */
+.ach{text-align:center}
+.ach .ic{width:64px;height:64px;border-radius:18px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;
+  font-size:1.8rem;background:radial-gradient(circle at 35% 30%,#fff,var(--cream-2))}
+.ach.locked{opacity:.45;filter:grayscale(.6)}
+
+/* stats */
+.stat{text-align:center}
+.stat .n{font-family:var(--serif);font-weight:700;font-size:2.4rem;color:var(--meadow-dk)}
+.ring{width:120px;height:120px;margin:0 auto}
+
+footer{position:fixed;bottom:8px;width:100%;text-align:center;font-size:.78rem;color:var(--ink-soft);z-index:5}
+@media(max-width:560px){.photos{columns:2}.nav-logo{font-size:1.2rem}.daycount{font-size:3rem}}
+</style>
+</head>
+<body>
+
+<!-- scenery -->
+<div class="sky">
+  <div class="sun"></div>
+  <svg class="cloud c1" width="220" height="90" viewBox="0 0 220 90"><g fill="#ffffff"><ellipse cx="70" cy="55" rx="60" ry="34"/><ellipse cx="130" cy="45" rx="55" ry="40"/><ellipse cx="170" cy="60" rx="45" ry="28"/></g></svg>
+  <svg class="cloud c2" width="220" height="90" viewBox="0 0 220 90"><g fill="#ffffff"><ellipse cx="70" cy="55" rx="60" ry="34"/><ellipse cx="130" cy="45" rx="55" ry="40"/><ellipse cx="170" cy="60" rx="45" ry="28"/></g></svg>
+  <svg class="cloud c3" width="220" height="90" viewBox="0 0 220 90"><g fill="#ffffff"><ellipse cx="70" cy="55" rx="60" ry="34"/><ellipse cx="130" cy="45" rx="55" ry="40"/><ellipse cx="170" cy="60" rx="45" ry="28"/></g></svg>
+  <svg class="hills" height="220" viewBox="0 0 1440 220" preserveAspectRatio="none" width="100%">
+    <path fill="#bfe0a8" d="M0,120 C240,40 480,40 720,110 C960,180 1200,150 1440,90 L1440,220 L0,220 Z"/>
+    <path fill="#8fc28a" d="M0,160 C260,100 520,200 780,150 C1040,100 1240,180 1440,140 L1440,220 L0,220 Z"/>
+    <path fill="#5f9d6a" d="M0,200 C300,160 600,210 900,185 C1140,165 1300,200 1440,185 L1440,220 L0,220 Z"/>
+  </svg>
+</div>
+<div class="grass" id="grass"></div>
+
+<div class="wrap">
+
+<!-- ====== LOGIN ====== -->
+<div class="screen" id="login">
+  <div class="login-card">
+    <!-- original forest-spirit-inspired SVG -->
+    <svg class="spirit" viewBox="0 0 120 120">
+      <ellipse cx="60" cy="70" rx="42" ry="46" fill="#8e9aa6"/>
+      <ellipse cx="60" cy="86" rx="30" ry="28" fill="#c8d0d8"/>
+      <path d="M40 30 L36 8 L50 26 Z M80 30 L84 8 L70 26 Z" fill="#8e9aa6"/>
+      <circle cx="47" cy="60" r="7" fill="#fff"/><circle cx="73" cy="60" r="7" fill="#fff"/>
+      <circle cx="47" cy="61" r="3.4" fill="#3f4a52"/><circle cx="73" cy="61" r="3.4" fill="#3f4a52"/>
+      <path d="M55 70 Q60 75 65 70" stroke="#3f4a52" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <ellipse cx="40" cy="74" rx="6" ry="4" fill="#f29e8e" opacity=".5"/><ellipse cx="80" cy="74" rx="6" ry="4" fill="#f29e8e" opacity=".5"/>
+    </svg>
+    <div class="brand">Вместе</div>
+    <div class="tag">наш маленький лес</div>
+
+    <div id="step-pass">
+      <div class="field"><input type="password" id="pwd" placeholder="Пароль в наш лес…" autocomplete="off"></div>
+      <button class="btn" onclick="checkPass()">Войти 🍃</button>
+      <div class="err" id="perr"></div>
+      <div class="hint">подсказка: <b>ghibli</b> (демо оформления)</div>
+    </div>
+
+    <div id="step-who" style="display:none">
+      <p class="muted" style="margin-bottom:16px">Кто пришёл?</p>
+      <div class="who-grid">
+        <div class="who olya" onclick="pick('Оля')"><div class="av">🌸</div><h3>Оля</h3></div>
+        <div class="who dima" onclick="pick('Дима')"><div class="av">🍃</div><h3>Дима</h3></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== APP ====== -->
+<div id="app">
+  <div class="nav">
+    <div class="nav-logo">О <em>&</em> Д</div>
+    <div class="nav-tabs" id="tabs"></div>
+    <button class="icon-btn" title="Звук">🔊</button>
+    <button class="icon-btn" onclick="logout()" title="Выйти">🚪</button>
+  </div>
+
+  <!-- Календарь -->
+  <section class="page active" id="p-calendar">
+    <h1 class="page-title">Календарь</h1>
+    <p class="page-sub">наши дни и встречи</p>
+    <div class="card">
+      <h3>Июнь 2026</h3>
+      <div class="cal" id="cal"></div>
+    </div>
+  </section>
+
+  <!-- Вместе -->
+  <section class="page" id="p-together">
+    <h1 class="page-title">Вместе</h1>
+    <p class="page-sub">сколько уже идём рядом</p>
+    <div class="card together">
+      <div class="daycount">847</div>
+      <div class="muted">дней вместе</div>
+      <div class="heart-row">💚 🤍 💚 🤍 💚</div>
+      <p class="muted">Следующая годовщина через <b>23 дня</b></p>
+    </div>
+  </section>
+
+  <!-- Вопрос дня -->
+  <section class="page" id="p-question">
+    <h1 class="page-title">Вопрос дня</h1>
+    <p class="page-sub">по одному вопросу каждый день</p>
+    <div class="card q-card">
+      <div style="font-size:2rem">🌿</div>
+      <div class="q-text">Если бы мы могли улететь куда угодно на выходные — куда?</div>
+      <div class="chat">
+        <div class="bubble olya"><span class="nm">Оля</span>В горы, где туман и тишина 🏔️</div>
+        <div class="bubble dima"><span class="nm">Дима</span>К морю! Но твой туман тоже беру 🌊</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Тирлисты -->
+  <section class="page" id="p-tier">
+    <h1 class="page-title">Тирлисты</h1>
+    <p class="page-sub">наши рейтинги всего на свете</p>
+    <div class="card">
+      <h3>Фильмы Гибли</h3>
+      <div class="tier"><div class="lab" style="background:#f29e8e">S</div><div class="items"><span class="it">Унесённые призраками</span><span class="it">Тоторо</span></div></div>
+      <div class="tier"><div class="lab" style="background:#f5b985">A</div><div class="items"><span class="it">Ходячий замок</span><span class="it">Принцесса Мононоке</span></div></div>
+      <div class="tier"><div class="lab" style="background:#8fc28a">B</div><div class="items"><span class="it">Кикки</span><span class="it">Поньо</span></div></div>
+    </div>
+  </section>
+
+  <!-- Питомец -->
+  <section class="page" id="p-pet">
+    <h1 class="page-title">Питомец</h1>
+    <p class="page-sub">наш общий лесной друг</p>
+    <div class="card pet-stage">
+      <svg class="pet" viewBox="0 0 120 120">
+        <ellipse cx="60" cy="72" rx="38" ry="40" fill="#c8d0d8"/>
+        <ellipse cx="60" cy="84" rx="26" ry="24" fill="#fff"/>
+        <path d="M42 34 L38 14 L52 30 Z M78 34 L82 14 L68 30 Z" fill="#c8d0d8"/>
+        <circle cx="50" cy="62" r="6" fill="#3f4a52"/><circle cx="70" cy="62" r="6" fill="#3f4a52"/>
+        <circle cx="48" cy="60" r="2" fill="#fff"/><circle cx="68" cy="60" r="2" fill="#fff"/>
+        <path d="M56 72 Q60 76 64 72" stroke="#3f4a52" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <ellipse cx="45" cy="70" rx="5" ry="3" fill="#f29e8e" opacity=".5"/><ellipse cx="75" cy="70" rx="5" ry="3" fill="#f29e8e" opacity=".5"/>
+      </svg>
+      <h3 style="font-family:var(--serif)">Мохнатик</h3>
+      <div style="max-width:280px;margin:14px auto 0">
+        <div class="muted" style="text-align:left;font-size:.85rem">Сытость</div><div class="bar"><span style="width:80%"></span></div>
+        <div class="muted" style="text-align:left;font-size:.85rem">Счастье</div><div class="bar"><span style="width:92%"></span></div>
+      </div>
+      <button class="btn" style="max-width:200px;margin:18px auto 0">Покормить 🍡</button>
+    </div>
+  </section>
+
+  <!-- Письма -->
+  <section class="page" id="p-letters">
+    <h1 class="page-title">Письма</h1>
+    <p class="page-sub">тёплые слова на потом</p>
+    <div class="grid g2">
+      <div class="letter">Привет, моё солнышко. Если читаешь это — значит соскучилась. Я рядом, даже когда далеко. 💚<br><br>— Дима</div>
+      <div class="letter">Спасибо, что ты есть. Каждое утро с тобой — как кадр из доброго мультфильма. 🌸<br><br>— Оля</div>
+    </div>
+  </section>
+
+  <!-- Фото -->
+  <section class="page" id="p-photos">
+    <h1 class="page-title">Фото</h1>
+    <p class="page-sub">наши кадры</p>
+    <div class="photos" id="photos"></div>
+  </section>
+
+  <!-- Музыка -->
+  <section class="page" id="p-music">
+    <h1 class="page-title">Музыка</h1>
+    <p class="page-sub">наш общий плейлист</p>
+    <div class="card">
+      <div class="track"><div class="pl">▶</div><div><b>Always With Me</b><div class="muted" style="font-size:.85rem">Спирит away</div></div></div>
+      <div class="track"><div class="pl">▶</div><div><b>One Summer's Day</b><div class="muted" style="font-size:.85rem">Joe Hisaishi</div></div></div>
+      <div class="track"><div class="pl">▶</div><div><b>Path of the Wind</b><div class="muted" style="font-size:.85rem">Тоторо</div></div></div>
+      <div class="track"><div class="pl">▶</div><div><b>Merry-Go-Round</b><div class="muted" style="font-size:.85rem">Ходячий замок</div></div></div>
+    </div>
+  </section>
+
+  <!-- Ачивки -->
+  <section class="page" id="p-achievements">
+    <h1 class="page-title">Ачивки</h1>
+    <p class="page-sub">наши маленькие победы</p>
+    <div class="grid g3">
+      <div class="card ach"><div class="ic">🌱</div><h3>Первый день</h3><p class="muted">начало пути</p></div>
+      <div class="card ach"><div class="ic">🍙</div><h3>100 вопросов</h3><p class="muted">отвечено вместе</p></div>
+      <div class="card ach"><div class="ic">📸</div><h3>50 фото</h3><p class="muted">альбом растёт</p></div>
+      <div class="card ach locked"><div class="ic">🏆</div><h3>1 год</h3><p class="muted">скоро…</p></div>
+    </div>
+  </section>
+
+  <!-- Статистика -->
+  <section class="page" id="p-stats">
+    <h1 class="page-title">Статистика</h1>
+    <p class="page-sub">наш лес в цифрах</p>
+    <div class="grid g3">
+      <div class="card stat"><div class="n">847</div><div class="muted">дней вместе</div></div>
+      <div class="card stat"><div class="n">312</div><div class="muted">вопросов</div></div>
+      <div class="card stat"><div class="n">128</div><div class="muted">фото</div></div>
+      <div class="card stat"><div class="n">26</div><div class="muted">писем</div></div>
+      <div class="card stat"><div class="n">9</div><div class="muted">тирлистов</div></div>
+      <div class="card stat"><div class="n">∞</div><div class="muted">любви</div></div>
+    </div>
+  </section>
+</div>
+
+<footer>сделано с 💚 в стиле студии Гибли · демо оформления</footer>
+</div>
+
+<script>
+// ---- scenery: grass + soot sprites ----
+(function(){
+  const g=document.getElementById('grass');
+  for(let i=0;i<120;i++){const b=document.createElement('i');b.style.left=(i*0.85)+'%';
+    b.style.height=(24+Math.random()*22)+'px';b.style.animationDelay=(-Math.random()*4)+'s';
+    b.style.animationDuration=(3+Math.random()*3)+'s';g.appendChild(b);}
+  for(let i=0;i<7;i++){const s=document.createElement('div');s.className='soot';
+    s.style.left=(Math.random()*100)+'vw';s.style.animationDelay=(-Math.random()*14)+'s';
+    s.style.animationDuration=(11+Math.random()*8)+'s';document.body.appendChild(s);}
+})();
+
+// ---- login ----
+const PASS='ghibli';
+function checkPass(){
+  const v=document.getElementById('pwd').value.trim().toLowerCase();
+  if(v===PASS){document.getElementById('step-pass').style.display='none';
+    document.getElementById('step-who').style.display='block';}
+  else{document.getElementById('perr').textContent='Лес тебя не узнаёт… попробуй ещё';}
+}
+document.getElementById('pwd').addEventListener('keydown',e=>{if(e.key==='Enter')checkPass();});
+function pick(name){
+  localStorage.setItem('anime_user',name);
+  document.getElementById('login').style.display='none';
+  document.getElementById('app').style.display='block';
+  buildTabs();
+}
+function logout(){localStorage.removeItem('anime_user');location.reload();}
+
+// ---- nav ----
+const PAGES=[['calendar','Календарь'],['together','Вместе'],['question','Вопрос дня'],
+['tier','Тирлисты'],['pet','Питомец'],['letters','Письма'],['photos','Фото'],
+['music','Музыка'],['achievements','Ачивки'],['stats','Статистика']];
+function buildTabs(){
+  const t=document.getElementById('tabs');t.innerHTML='';
+  PAGES.forEach((p,i)=>{const b=document.createElement('button');
+    b.className='nav-tab'+(i===0?' active':'');b.textContent=p[1];
+    b.onclick=()=>showPage(p[0],b);t.appendChild(b);});
+}
+function showPage(id,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('p-'+id).classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  if(el)el.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ---- calendar fill ----
+(function(){
+  const c=document.getElementById('cal');
+  ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'].forEach(d=>{const e=document.createElement('div');e.className='dow';e.textContent=d;c.appendChild(e);});
+  const events={5:'💚',12:'📸',18:'🎂',27:'✈️'};
+  for(let i=1;i<=30;i++){const d=document.createElement('div');
+    d.className='day'+(events[i]?' dot':'');
+    d.innerHTML=i+(events[i]?'<span class="ev">'+events[i]+'</span>':'');c.appendChild(d);}
+})();
+
+// ---- photos ----
+(function(){
+  const grad=['#cfe6ff','#ffd7e0','#d8f0cf','#ffe9c2','#e7dcff','#cdeef0'];
+  const emo=['🌳','🌊','🏔️','🌅','🚂','🍜','🌸','🎐','🛶'];
+  const p=document.getElementById('photos');
+  for(let i=0;i<9;i++){const ph=document.createElement('div');ph.className='ph';
+    ph.innerHTML='<div style="background:'+grad[i%grad.length]+'">'+emo[i]+'</div>';p.appendChild(ph);}
+})();
+
+// auto-login if user stored
+if(localStorage.getItem('anime_user')){
+  document.getElementById('login').style.display='none';
+  document.getElementById('app').style.display='block';
+  buildTabs();
+}
+</script>
+</body>
+</html>
