@@ -521,10 +521,10 @@ footer{position:fixed;bottom:8px;width:100%;text-align:center;font-size:.78rem;c
     <h1 class="page-title">Вместе</h1>
     <p class="page-sub">сколько уже идём рядом</p>
     <div class="card together">
-      <div class="daycount">847</div>
+      <div class="daycount" id="daycount">…</div>
       <div class="muted">дней вместе</div>
       <div class="heart-row">💚 🤍 💚 🤍 💚</div>
-      <p class="muted">Следующая годовщина через <b>23 дня</b></p>
+      <p class="muted" id="since-line">с <b>—</b></p>
     </div>
   </section>
 
@@ -532,13 +532,9 @@ footer{position:fixed;bottom:8px;width:100%;text-align:center;font-size:.78rem;c
   <section class="page" id="p-question">
     <h1 class="page-title">Вопрос дня</h1>
     <p class="page-sub">по одному вопросу каждый день</p>
-    <div class="card q-card">
+    <div class="card q-card" id="question-card">
       <div style="font-size:2rem">🌿</div>
-      <div class="q-text">Если бы мы могли улететь куда угодно на выходные — куда?</div>
-      <div class="chat">
-        <div class="bubble olya"><span class="nm">Оля</span>В горы, где туман и тишина 🏔️</div>
-        <div class="bubble dima"><span class="nm">Дима</span>К морю! Но твой туман тоже беру 🌊</div>
-      </div>
+      <div class="q-text">загрузка…</div>
     </div>
   </section>
 
@@ -546,12 +542,7 @@ footer{position:fixed;bottom:8px;width:100%;text-align:center;font-size:.78rem;c
   <section class="page" id="p-tier">
     <h1 class="page-title">Тирлисты</h1>
     <p class="page-sub">наши рейтинги всего на свете</p>
-    <div class="card">
-      <h3>Фильмы Гибли</h3>
-      <div class="tier"><div class="lab" style="background:#f29e8e">S</div><div class="items"><span class="it">Унесённые призраками</span><span class="it">Тоторо</span></div></div>
-      <div class="tier"><div class="lab" style="background:#f5b985">A</div><div class="items"><span class="it">Ходячий замок</span><span class="it">Принцесса Мононоке</span></div></div>
-      <div class="tier"><div class="lab" style="background:#8fc28a">B</div><div class="items"><span class="it">Кикки</span><span class="it">Поньо</span></div></div>
-    </div>
+    <div class="card" id="tier-card"><div class="muted">загрузка…</div></div>
   </section>
 
   <!-- Питомец -->
@@ -578,10 +569,10 @@ footer{position:fixed;bottom:8px;width:100%;text-align:center;font-size:.78rem;c
         <path d="M56 72 Q60 76 64 72" stroke="#2f3a37" stroke-width="2" fill="none" stroke-linecap="round"/>
         <ellipse cx="45" cy="70" rx="5" ry="3" fill="#dd8f6b" opacity=".45"/><ellipse cx="75" cy="70" rx="5" ry="3" fill="#dd8f6b" opacity=".45"/>
       </svg>
-      <h3 style="font-family:var(--serif)">Мохнатик</h3>
+      <h3 style="font-family:var(--serif)">Мохнатик · <span id="pet-lvl">ур. …</span></h3>
       <div style="max-width:280px;margin:14px auto 0">
-        <div class="muted" style="text-align:left;font-size:.85rem">Сытость</div><div class="bar"><span style="width:80%"></span></div>
-        <div class="muted" style="text-align:left;font-size:.85rem">Счастье</div><div class="bar"><span style="width:92%"></span></div>
+        <div class="muted" style="text-align:left;font-size:.85rem">Опыт <span id="pet-xp"></span></div>
+        <div class="bar"><span id="pet-bar" style="width:0%"></span></div>
       </div>
       <button class="btn warm" style="max-width:200px;margin:18px auto 0">Покормить 🍡</button>
     </div>
@@ -591,10 +582,7 @@ footer{position:fixed;bottom:8px;width:100%;text-align:center;font-size:.78rem;c
   <section class="page" id="p-letters">
     <h1 class="page-title">Письма</h1>
     <p class="page-sub">тёплые слова на потом</p>
-    <div class="grid g2">
-      <div class="letter">Привет, моё солнышко. Если читаешь это — значит соскучилась. Я рядом, даже когда далеко. 💚<br><br>— Дима</div>
-      <div class="letter">Спасибо, что ты есть. Каждое утро с тобой — как кадр из доброго мультфильма. 🌸<br><br>— Оля</div>
-    </div>
+    <div class="grid g2" id="letters-list"><div class="muted">загрузка…</div></div>
   </section>
 
   <!-- Фото -->
@@ -608,23 +596,16 @@ footer{position:fixed;bottom:8px;width:100%;text-align:center;font-size:.78rem;c
   <section class="page" id="p-music">
     <h1 class="page-title">Музыка</h1>
     <p class="page-sub">наш общий плейлист</p>
-    <div class="card">
-      <div class="track"><div class="pl">▶</div><div><b>Always With Me</b><div class="muted" style="font-size:.85rem">Спирит away</div></div></div>
-      <div class="track"><div class="pl">▶</div><div><b>One Summer's Day</b><div class="muted" style="font-size:.85rem">Joe Hisaishi</div></div></div>
-      <div class="track"><div class="pl">▶</div><div><b>Path of the Wind</b><div class="muted" style="font-size:.85rem">Тоторо</div></div></div>
-      <div class="track"><div class="pl">▶</div><div><b>Merry-Go-Round</b><div class="muted" style="font-size:.85rem">Ходячий замок</div></div></div>
-    </div>
+    <div class="card" id="tracks-list"><div class="muted">загрузка…</div></div>
   </section>
 
   <!-- Ачивки -->
   <section class="page" id="p-achievements">
     <h1 class="page-title">Ачивки</h1>
     <p class="page-sub">наши маленькие победы</p>
-    <div class="grid g3">
-      <div class="card ach"><div class="ic">🌱</div><h3>Первый день</h3><p class="muted">начало пути</p></div>
-      <div class="card ach"><div class="ic">🍙</div><h3>100 вопросов</h3><p class="muted">отвечено вместе</p></div>
-      <div class="card ach"><div class="ic">📸</div><h3>50 фото</h3><p class="muted">альбом растёт</p></div>
-      <div class="card ach locked"><div class="ic">🏆</div><h3>1 год</h3><p class="muted">скоро…</p></div>
+    <div id="ach-summary" class="muted" style="margin-bottom:16px"></div>
+    <div class="grid g3" id="ach-grid">
+      <div class="card ach"><div class="ic">🌱</div><h3>загрузка…</h3></div>
     </div>
   </section>
 
@@ -632,13 +613,8 @@ footer{position:fixed;bottom:8px;width:100%;text-align:center;font-size:.78rem;c
   <section class="page" id="p-stats">
     <h1 class="page-title">Статистика</h1>
     <p class="page-sub">наш лес в цифрах</p>
-    <div class="grid g3">
-      <div class="card stat"><div class="n">847</div><div class="muted">дней вместе</div></div>
-      <div class="card stat"><div class="n">312</div><div class="muted">вопросов</div></div>
-      <div class="card stat"><div class="n">128</div><div class="muted">фото</div></div>
-      <div class="card stat"><div class="n">26</div><div class="muted">писем</div></div>
-      <div class="card stat"><div class="n">9</div><div class="muted">тирлистов</div></div>
-      <div class="card stat"><div class="n">∞</div><div class="muted">любви</div></div>
+    <div class="grid g3" id="stats-grid">
+      <div class="card stat"><div class="n">…</div><div class="muted">загрузка</div></div>
     </div>
   </section>
 </div>
@@ -750,6 +726,151 @@ function toggleMusic(){
     document.removeEventListener('click',go);};
   document.addEventListener('click',go);
 }})();
+
+// ====== LIVE DATA FROM MAIN PROJECT (Firebase /app, read-only) ======
+const FB='https://vmeste-a8b90-default-rtdb.firebaseio.com/app/';
+const ACHS=[
+ {id:'a1',icon:'🏠',title:'Посмотреть на Дом-Дженгу в Петербурге'},
+ {id:'a2',icon:'🦕',title:'Сходить в Зоологический музей'},
+ {id:'a3',icon:'📸',title:'Сфотографироваться со спины с красивым видом'},
+ {id:'a4',icon:'🌿',title:'Дом в стиле модерн во Владивостоке'},
+ {id:'a5',icon:'🎵',title:'Сходить на концерт Мельницы'},
+ {id:'a6',icon:'🎶',title:'Послушать пластинку bbno$ в деревне'},
+ {id:'a7',icon:'📺',title:'Досмотреть Галаванта'},
+ {id:'a8',icon:'🐠',title:'Сидеть в океанариуме у рыб и медуз'},
+ {id:'a9',icon:'💋',title:'Поцеловаться первый раз'},
+ {id:'a10',icon:'🛗',title:'Поцеловаться на эскалаторе'},
+ {id:'a11',icon:'🇨🇳',title:'Поцеловаться в Китае'},
+ {id:'a12',icon:'🏗️',title:'Поцелуй у брутализма'},
+ {id:'a13',icon:'📷',title:'Поцеловаться в фотобудке'},
+ {id:'a14',icon:'🪑',title:'Коммунистическая скамейка'},
+ {id:'a15',icon:'🏙️',title:'Поцеловаться на крыше'},
+ {id:'a16',icon:'🎆',title:'Поцеловаться в Новый год'},
+ {id:'a18',icon:'🎡',title:'Поцеловаться на колесе обозрения'},
+ {id:'a19',icon:'🌧️',title:'Поцеловаться под дождём'},
+ {id:'a20',icon:'🗼',title:'Поцелуй у маленькой Эйфелевой башни'},
+ {id:'a21',icon:'🧶',title:'Оля покупает пряжу, Дима платит'},
+ {id:'a22',icon:'🍞',title:'Суп в хлебе'},
+ {id:'a23',icon:'⚔️',title:'Рыцарский турнир'},
+ {id:'a24',icon:'🏠',title:'Пожить вместе неделю'},
+ {id:'a26',icon:'⛰️',title:'Сходить на гору ночью'},
+ {id:'a27',icon:'🌃',title:'Переночевать в Уссурийске у Кати'},
+ {id:'a28',icon:'🌏',title:'Поехать в Новую Зеландию'},
+ {id:'a29',icon:'🔥',title:'30 дней стрика зарядки и таблеток'},
+ {id:'a30',icon:'⛵',title:'Посетить Кронштадт'},
+ {id:'a31',icon:'🏰',title:'Посетить Калининград'},
+ {id:'a32',icon:'🏯',title:'Посетить Выборг'}
+];
+const FRUITS=['Банан','Яблоко','Манго','Клубника','Виноград','Арбуз','Ананас','Апельсин','Киви','Персик','Груша','Вишня','Дыня','Малина','Гранат','Маракуйя','Хурма','Слива','Лимон','Кокос','Мандарин','Инжир'];
+const TIER_COL=['#dd8f6b','#e6b06a','#8aa86a','#7d8a8c','#a98ca0'];
+
+async function fb(node){
+  try{const r=await fetch(FB+node+'.json');let v=await r.json();
+    if(typeof v==='string'){try{v=JSON.parse(v);}catch(e){}}return v;}catch(e){return null;}
+}
+function esc(s){return (s==null?'':String(s)).replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]));}
+
+async function loadLive(){
+  const [since,ach,custom,pet,tracks,photos,letters,questions,tier]=await Promise.all(
+    ['together_since','ach','customAchs','pet','tracks','photos','letters','questions','tierlists'].map(fb));
+
+  // --- days together + since line ---
+  let days=0, sinceStr='—';
+  if(since){const d0=new Date(since);if(!isNaN(d0)){sinceStr=d0.toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'});
+    days=Math.max(0,Math.floor((Date.now()-d0.getTime())/86400000));}}
+  const dc=document.getElementById('daycount');if(dc){dc.textContent=days;dc.dataset.done='';}
+  const sl=document.getElementById('since-line');if(sl)sl.innerHTML='вместе с <b>'+esc(sinceStr)+'</b>';
+
+  // --- achievements ---
+  const achObj=ach||{}; const customArr=Array.isArray(custom)?custom:[];
+  const unlocked=ACHS.filter(a=>achObj[a.id]).length+customArr.length;
+  const total=ACHS.length+customArr.length;
+  const sm=document.getElementById('ach-summary');
+  if(sm)sm.innerHTML='Открыто <b>'+unlocked+'</b> из '+total;
+  const ag=document.getElementById('ach-grid');
+  if(ag){ag.innerHTML='';
+    ACHS.forEach(a=>{const on=!!achObj[a.id];
+      ag.insertAdjacentHTML('beforeend',
+        '<div class="card ach'+(on?'':' locked')+'"><div class="ic">'+(a.icon||'🏅')+'</div><h3>'+esc(a.title)+'</h3><p class="muted">'+(on?'открыто':'впереди')+'</p></div>');});
+    customArr.forEach(c=>{ag.insertAdjacentHTML('beforeend',
+      '<div class="card ach"><div class="ic">✨</div><h3>'+esc(c.title)+'</h3><p class="muted">своя · '+esc(c.cat||'')+'</p></div>');});
+  }
+
+  // --- pet (xp -> level) ---
+  const xp=(pet&&pet.xp)||0, lvl=Math.floor(xp/100), prog=xp%100;
+  const pl=document.getElementById('pet-lvl');if(pl)pl.textContent='ур. '+lvl;
+  const px=document.getElementById('pet-xp');if(px)px.textContent=xp+' XP';
+  const pb=document.getElementById('pet-bar');if(pb)setTimeout(()=>pb.style.width=prog+'%',300);
+
+  // --- tracks ---
+  const tl=document.getElementById('tracks-list');
+  if(tl){const arr=Array.isArray(tracks)?tracks:[];
+    tl.innerHTML=arr.length?'':'<div class="muted">пока пусто</div>';
+    arr.forEach(t=>{tl.insertAdjacentHTML('beforeend',
+      '<a class="track" href="'+esc(t.url)+'" target="_blank" rel="noopener" style="text-decoration:none;color:inherit">'+
+      '<div class="pl">▶</div><div><b>'+esc(t.title||t.url)+'</b>'+(t.by?'<div class="muted" style="font-size:.85rem">'+esc(t.by)+'</div>':'')+'</div></a>');});
+  }
+
+  // --- photos (real base64) ---
+  const ph=document.getElementById('photos');
+  if(ph&&Array.isArray(photos)&&photos.length){ph.innerHTML='';
+    photos.forEach(p=>{if(!p||!p.data)return;
+      ph.insertAdjacentHTML('beforeend','<div class="ph"><img src="'+p.data+'" style="width:100%;height:100%;object-fit:cover;display:block" loading="lazy"></div>');});}
+
+  // --- letters ---
+  const ll=document.getElementById('letters-list');
+  if(ll){const arr=Array.isArray(letters)?letters:[];
+    if(!arr.length)ll.innerHTML='<div class="muted">писем пока нет 🍃</div>';
+    else{ll.innerHTML='';arr.forEach(l=>{ll.insertAdjacentHTML('beforeend',
+      '<div class="letter">'+esc(l.text||l.body||'')+(l.by?'<br><br>— '+esc(l.by):'')+'</div>');});}
+  }
+
+  // --- question of day (latest answered) ---
+  const qc=document.getElementById('question-card');
+  if(qc&&questions&&typeof questions==='object'){
+    const keys=Object.keys(questions).sort((a,b)=>{
+      const pa=a.split('-').map(Number),pb=b.split('-').map(Number);
+      return new Date(pa[0],pa[1]-1,pa[2])-new Date(pb[0],pb[1]-1,pb[2]);});
+    const last=keys[keys.length-1];const q=questions[last]||{};
+    qc.innerHTML='<div style="font-size:2rem">🌿</div>'+
+      '<div class="q-text">Вопрос дня · '+esc(last)+'</div><div class="chat">'+
+      (q.o?'<div class="bubble olya"><span class="nm">Оля</span>'+esc(q.o)+'</div>':'')+
+      (q.d?'<div class="bubble dima"><span class="nm">Дима</span>'+esc(q.d)+'</div>':'')+'</div>';
+  }
+
+  // --- tierlist (latest week) ---
+  const tc=document.getElementById('tier-card');
+  if(tc&&tier&&tier.weeks){
+    const wks=Object.keys(tier.weeks).sort();const wk=tier.weeks[wks[wks.length-1]];
+    const items=(wk.themeId==='fruits')?FRUITS:null;
+    const labels=wk.labels||['S','A','B','C','D'];
+    const place=(wk.place&&(wk.place.d||wk.place.o))||{};
+    let html='<h3>'+esc(wk.themeId)+' · неделя '+esc(wks[wks.length-1])+'</h3>';
+    labels.forEach((lab,li)=>{
+      const its=Object.keys(place).filter(k=>place[k]===li).map(k=>{
+        const idx=parseInt(k.replace('t',''),10);return items?(items[idx]||k):k;});
+      html+='<div class="tier"><div class="lab" style="background:'+TIER_COL[li%TIER_COL.length]+'">'+esc(lab)+'</div>'+
+        '<div class="items">'+(its.length?its.map(x=>'<span class="it">'+esc(x)+'</span>').join(''):'<span class="muted">—</span>')+'</div></div>';
+    });
+    tc.innerHTML=html;
+  }
+
+  // refresh count-up for stats + recompute stats grid
+  const sg=document.getElementById('stats-grid');
+  if(sg){const qCount=questions&&typeof questions==='object'?Object.keys(questions).length:0;
+    const pCount=Array.isArray(photos)?photos.length:0;
+    const lCount=Array.isArray(letters)?letters.length:0;
+    const tCount=Array.isArray(tracks)?tracks.length:0;
+    const wCount=tier&&tier.weeks?Object.keys(tier.weeks).length:0;
+    sg.innerHTML=[
+      [days,'дней вместе'],[qCount,'вопросов'],[pCount,'фото'],[lCount,'писем'],
+      [tCount,'треков'],[wCount,'тирлистов'],[unlocked,'ачивок'],[xp,'XP питомца'],['∞','любви']
+    ].map(s=>'<div class="card stat"><div class="n">'+s[0]+'</div><div class="muted">'+s[1]+'</div></div>').join('');
+  }
+  // re-reveal active page so new cards animate + count-up
+  const active=document.querySelector('.page.active');if(active)revealPage(active);
+}
+loadLive();
 
 // ---- login ----
 const PASS='ghibli';
