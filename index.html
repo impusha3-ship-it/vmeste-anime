@@ -9,15 +9,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;700&family=Nunito:ital,wght@0,400;0,600;0,800;1,400&family=Marck+Script&display=swap" rel="stylesheet">
 <style>
 :root{
-  --sky-top:#aee0f5; --sky-mid:#cfeef7; --sky-low:#fdf3df;
-  --cream:#fbf4e3; --cream-2:#f5ead0;
-  --ink:#3f4a52; --ink-soft:#6a7780;
-  --meadow:#8fc28a; --meadow-dk:#5f9d6a;
-  --peach:#f5b985; --sunset:#f29e8e; --rose:#e88aa0;
-  --totoro:#8e9aa6; --totoro-dk:#5f6b78;
-  --gold:#e8b95a;
-  --card:rgba(255,255,255,.72);
-  --shadow:0 18px 40px -18px rgba(63,74,82,.45);
+  /* Ghibli naturalistic palette — desaturated, layered, warm light */
+  --sky-top:#5b9bc4; --sky-mid:#9cc6dd; --sky-low:#e8eddf; --sky-haze:#f3ecd6;
+  --cream:#f4ecd6; --cream-2:#e6dab8;
+  --ink:#3a4a47; --ink-soft:#6e7a72;
+  --meadow:#8aa86a; --meadow-dk:#5d7d4c; --meadow-deep:#3f5e3c;
+  --peach:#e6b06a; --sunset:#dd8f6b; --rose:#d0809a;
+  --totoro:#7d8a8c; --totoro-dk:#525e5f;
+  --gold:#d9a94e;
+  --card:rgba(247,242,228,.78);
+  --shadow:0 18px 40px -18px rgba(58,74,71,.5);
   --radius:26px;
   --serif:'Comfortaa',cursive; --body:'Nunito',sans-serif; --hand:'Marck Script',cursive;
 }
@@ -25,23 +26,40 @@
 html,body{height:100%}
 body{
   font-family:var(--body); color:var(--ink);
-  background:linear-gradient(180deg,var(--sky-top) 0%,var(--sky-mid) 42%,var(--sky-low) 100%);
+  background:linear-gradient(180deg,var(--sky-top) 0%,var(--sky-mid) 38%,var(--sky-low) 64%,var(--sky-haze) 100%);
   min-height:100vh; overflow-x:hidden; position:relative;
 }
+/* ====== PAINTERLY TEXTURE OVERLAYS ====== */
+/* grain — gouache paper tooth */
+.grain{position:fixed;inset:0;width:100%;height:100%;z-index:3;pointer-events:none;opacity:.32;mix-blend-mode:multiply}
+/* soft watercolor light bloom + god rays */
+.atmos{position:fixed;inset:0;z-index:2;pointer-events:none;
+  background:
+    radial-gradient(60% 50% at 78% 12%, rgba(255,244,210,.55), rgba(255,244,210,0) 60%),
+    radial-gradient(120% 80% at 50% 100%, rgba(243,236,214,.5), rgba(243,236,214,0) 55%);
+  mix-blend-mode:screen}
+.rays{position:fixed;top:-10%;right:6%;width:55vw;height:90vh;z-index:2;pointer-events:none;
+  background:conic-gradient(from 200deg at 100% 0%,
+    rgba(255,245,210,0) 0deg, rgba(255,245,210,.22) 8deg, rgba(255,245,210,0) 16deg,
+    rgba(255,245,210,0) 24deg, rgba(255,245,210,.16) 30deg, rgba(255,245,210,0) 38deg,
+    rgba(255,245,210,0) 50deg, rgba(255,245,210,.2) 58deg, rgba(255,245,210,0) 66deg);
+  filter:blur(6px);mix-blend-mode:screen;animation:rays 18s ease-in-out infinite}
+@keyframes rays{50%{opacity:.6;transform:rotate(2deg)}}
 /* ====== SKY / SCENERY ====== */
 .sky{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
-.sun{position:absolute;top:8%;right:12%;width:120px;height:120px;border-radius:50%;
-  background:radial-gradient(circle,#fff5d6 0%,#ffe49c 55%,rgba(255,228,156,0) 72%);
-  filter:blur(2px);animation:sun-pulse 9s ease-in-out infinite}
-@keyframes sun-pulse{50%{transform:scale(1.08);opacity:.9}}
-.cloud{position:absolute;opacity:.9;filter:drop-shadow(0 10px 14px rgba(120,150,170,.18))}
-.cloud.c1{top:14%;animation:drift 60s linear infinite}
-.cloud.c2{top:30%;transform:scale(.7);animation:drift 85s linear infinite;animation-delay:-20s;opacity:.7}
-.cloud.c3{top:50%;transform:scale(1.2);animation:drift 110s linear infinite;animation-delay:-50s;opacity:.55}
-@keyframes drift{from{left:-25%}to{left:120%}}
-.hills{position:absolute;bottom:0;left:0;width:100%;z-index:1}
-.grass{position:fixed;bottom:0;left:0;width:100%;height:70px;z-index:1;pointer-events:none}
-.grass i{position:absolute;bottom:0;width:8px;height:34px;background:linear-gradient(var(--meadow),var(--meadow-dk));
+.sun{position:absolute;top:7%;right:11%;width:160px;height:160px;border-radius:50%;
+  background:radial-gradient(circle,#fffaf0 0%,#ffeec4 42%,rgba(255,238,196,.4) 60%,rgba(255,238,196,0) 74%);
+  filter:blur(3px);animation:sun-pulse 9s ease-in-out infinite}
+@keyframes sun-pulse{50%{transform:scale(1.06);opacity:.92}}
+/* painterly clouds: soft displaced blobs */
+.cloud{position:absolute;filter:url(#paint) blur(1.5px) drop-shadow(0 14px 18px rgba(110,135,150,.22))}
+.cloud.c1{top:11%;animation:drift 70s linear infinite}
+.cloud.c2{top:26%;transform:scale(.72);animation:drift 95s linear infinite;animation-delay:-25s;opacity:.8}
+.cloud.c3{top:46%;transform:scale(1.25);animation:drift 120s linear infinite;animation-delay:-55s;opacity:.6}
+@keyframes drift{from{left:-28%}to{left:122%}}
+.hills{position:absolute;bottom:0;left:0;width:100%;z-index:1;filter:url(#paint)}
+.grass{position:fixed;bottom:0;left:0;width:100%;height:70px;z-index:1;pointer-events:none;filter:url(#paint)}
+.grass i{position:absolute;bottom:0;width:8px;height:34px;background:linear-gradient(var(--meadow),var(--meadow-deep));
   border-radius:50% 50% 0 0;transform-origin:bottom center;animation:sway 4s ease-in-out infinite}
 /* soot sprites */
 .soot{position:fixed;width:18px;height:18px;border-radius:50%;background:#33373d;z-index:2;
@@ -170,7 +188,7 @@ input:focus{border-color:var(--meadow);box-shadow:0 0 0 4px rgba(143,194,138,.25
 .photos .ph{break-inside:avoid;margin-bottom:14px;border-radius:18px;overflow:hidden;box-shadow:var(--shadow);
   background:#fff;border:6px solid #fff;transition:.3s;cursor:pointer}
 .photos .ph:hover{transform:rotate(-2deg) scale(1.03)}
-.photos .ph div{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:2.4rem}
+.photos .ph svg{aspect-ratio:1;height:auto}
 
 /* music */
 .track{display:flex;align-items:center;gap:14px;padding:12px;border-radius:16px;background:rgba(255,255,255,.6);margin-bottom:10px;transition:.2s}
@@ -195,19 +213,54 @@ footer{position:fixed;bottom:8px;width:100%;text-align:center;font-size:.78rem;c
 </head>
 <body>
 
+<!-- global SVG filters: painterly displacement + grain -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="paint" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012 0.018" numOctaves="2" seed="7" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="14" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="paintsoft" x="-30%" y="-30%" width="160%" height="160%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="3" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="7"/>
+    </filter>
+    <radialGradient id="cloudg" cx="42%" cy="38%" r="75%">
+      <stop offset="0%" stop-color="#fffdf8"/><stop offset="55%" stop-color="#f4f0e4"/>
+      <stop offset="100%" stop-color="#d6dfe0"/>
+    </radialGradient>
+    <linearGradient id="hillA" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#cdd9b0"/><stop offset="100%" stop-color="#aec295"/></linearGradient>
+    <linearGradient id="hillB" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#9fb87f"/><stop offset="100%" stop-color="#7f9d63"/></linearGradient>
+    <linearGradient id="hillC" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#6f8d54"/><stop offset="100%" stop-color="#4f6e3f"/></linearGradient>
+  </defs>
+</svg>
+
 <!-- scenery -->
 <div class="sky">
   <div class="sun"></div>
-  <svg class="cloud c1" width="220" height="90" viewBox="0 0 220 90"><g fill="#ffffff"><ellipse cx="70" cy="55" rx="60" ry="34"/><ellipse cx="130" cy="45" rx="55" ry="40"/><ellipse cx="170" cy="60" rx="45" ry="28"/></g></svg>
-  <svg class="cloud c2" width="220" height="90" viewBox="0 0 220 90"><g fill="#ffffff"><ellipse cx="70" cy="55" rx="60" ry="34"/><ellipse cx="130" cy="45" rx="55" ry="40"/><ellipse cx="170" cy="60" rx="45" ry="28"/></g></svg>
-  <svg class="cloud c3" width="220" height="90" viewBox="0 0 220 90"><g fill="#ffffff"><ellipse cx="70" cy="55" rx="60" ry="34"/><ellipse cx="130" cy="45" rx="55" ry="40"/><ellipse cx="170" cy="60" rx="45" ry="28"/></g></svg>
-  <svg class="hills" height="220" viewBox="0 0 1440 220" preserveAspectRatio="none" width="100%">
-    <path fill="#bfe0a8" d="M0,120 C240,40 480,40 720,110 C960,180 1200,150 1440,90 L1440,220 L0,220 Z"/>
-    <path fill="#8fc28a" d="M0,160 C260,100 520,200 780,150 C1040,100 1240,180 1440,140 L1440,220 L0,220 Z"/>
-    <path fill="#5f9d6a" d="M0,200 C300,160 600,210 900,185 C1140,165 1300,200 1440,185 L1440,220 L0,220 Z"/>
+  <svg class="cloud c1" width="280" height="120" viewBox="0 0 280 120"><g fill="url(#cloudg)"><ellipse cx="80" cy="72" rx="74" ry="40"/><ellipse cx="150" cy="56" rx="68" ry="48"/><ellipse cx="210" cy="74" rx="58" ry="34"/><ellipse cx="120" cy="84" rx="80" ry="30"/></g></svg>
+  <svg class="cloud c2" width="280" height="120" viewBox="0 0 280 120"><g fill="url(#cloudg)"><ellipse cx="80" cy="72" rx="74" ry="40"/><ellipse cx="150" cy="56" rx="68" ry="48"/><ellipse cx="210" cy="74" rx="58" ry="34"/><ellipse cx="120" cy="84" rx="80" ry="30"/></g></svg>
+  <svg class="cloud c3" width="280" height="120" viewBox="0 0 280 120"><g fill="url(#cloudg)"><ellipse cx="80" cy="72" rx="74" ry="40"/><ellipse cx="150" cy="56" rx="68" ry="48"/><ellipse cx="210" cy="74" rx="58" ry="34"/><ellipse cx="120" cy="84" rx="80" ry="30"/></g></svg>
+  <!-- layered atmospheric hills, painted with depth haze between -->
+  <svg class="hills" height="300" viewBox="0 0 1440 300" preserveAspectRatio="none" width="100%">
+    <path fill="url(#hillA)" opacity=".75" d="M0,150 C240,70 480,70 720,140 C960,210 1200,180 1440,120 L1440,300 L0,300 Z"/>
+    <path fill="#dfe7d0" opacity=".28" d="M0,162 C240,84 480,86 720,150 C960,216 1200,190 1440,134 L1440,300 L0,300 Z"/>
+    <path fill="url(#hillB)" opacity=".92" d="M0,200 C260,140 520,238 780,190 C1040,142 1240,218 1440,180 L1440,300 L0,300 Z"/>
+    <path fill="url(#hillC)" d="M0,250 C300,206 600,256 900,230 C1140,210 1300,246 1440,232 L1440,300 L0,300 Z"/>
+    <!-- distant tree clumps -->
+    <g fill="#46603a" opacity=".9">
+      <ellipse cx="180" cy="236" rx="34" ry="26"/><ellipse cx="220" cy="240" rx="26" ry="20"/>
+      <ellipse cx="1040" cy="226" rx="40" ry="30"/><ellipse cx="1090" cy="232" rx="28" ry="22"/>
+      <ellipse cx="640" cy="246" rx="30" ry="22"/>
+    </g>
   </svg>
 </div>
 <div class="grass" id="grass"></div>
+<div class="atmos"></div>
+<div class="rays"></div>
+<svg class="grain" preserveAspectRatio="none"><filter id="g"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="linear" slope="0.5"/></feComponentTransfer></filter><rect width="100%" height="100%" filter="url(#g)"/></svg>
 
 <div class="wrap">
 
@@ -216,13 +269,28 @@ footer{position:fixed;bottom:8px;width:100%;text-align:center;font-size:.78rem;c
   <div class="login-card">
     <!-- original forest-spirit-inspired SVG -->
     <svg class="spirit" viewBox="0 0 120 120">
-      <ellipse cx="60" cy="70" rx="42" ry="46" fill="#8e9aa6"/>
-      <ellipse cx="60" cy="86" rx="30" ry="28" fill="#c8d0d8"/>
-      <path d="M40 30 L36 8 L50 26 Z M80 30 L84 8 L70 26 Z" fill="#8e9aa6"/>
-      <circle cx="47" cy="60" r="7" fill="#fff"/><circle cx="73" cy="60" r="7" fill="#fff"/>
-      <circle cx="47" cy="61" r="3.4" fill="#3f4a52"/><circle cx="73" cy="61" r="3.4" fill="#3f4a52"/>
-      <path d="M55 70 Q60 75 65 70" stroke="#3f4a52" stroke-width="2" fill="none" stroke-linecap="round"/>
-      <ellipse cx="40" cy="74" rx="6" ry="4" fill="#f29e8e" opacity=".5"/><ellipse cx="80" cy="74" rx="6" ry="4" fill="#f29e8e" opacity=".5"/>
+      <defs>
+        <radialGradient id="body" cx="42%" cy="34%" r="72%">
+          <stop offset="0%" stop-color="#9aa6a8"/><stop offset="60%" stop-color="#7d8a8c"/><stop offset="100%" stop-color="#566062"/>
+        </radialGradient>
+        <radialGradient id="belly" cx="50%" cy="38%" r="70%">
+          <stop offset="0%" stop-color="#f4efe0"/><stop offset="100%" stop-color="#cdd2c8"/>
+        </radialGradient>
+      </defs>
+      <g filter="url(#paintsoft)">
+        <path d="M40 30 L35 6 L51 27 Z M80 30 L85 6 L69 27 Z" fill="url(#body)"/>
+        <ellipse cx="60" cy="70" rx="43" ry="47" fill="url(#body)"/>
+        <ellipse cx="60" cy="86" rx="31" ry="29" fill="url(#belly)"/>
+        <!-- painted fur chevrons -->
+        <g stroke="#5a6566" stroke-width="1.4" opacity=".5" fill="none" stroke-linecap="round">
+          <path d="M44 80 l3 4 l3 -4 M54 86 l3 4 l3 -4 M64 86 l3 4 l3 -4 M50 94 l3 4 l3 -4 M62 94 l3 4 l3 -4"/>
+        </g>
+      </g>
+      <ellipse cx="47" cy="60" rx="7" ry="7.5" fill="#f6f2e6"/><ellipse cx="73" cy="60" rx="7" ry="7.5" fill="#f6f2e6"/>
+      <circle cx="47" cy="61" r="3.4" fill="#2f3a37"/><circle cx="73" cy="61" r="3.4" fill="#2f3a37"/>
+      <circle cx="48.4" cy="59.4" r="1.1" fill="#fff"/><circle cx="74.4" cy="59.4" r="1.1" fill="#fff"/>
+      <path d="M55 70 Q60 75 65 70" stroke="#2f3a37" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <ellipse cx="40" cy="74" rx="6" ry="4" fill="#dd8f6b" opacity=".45"/><ellipse cx="80" cy="74" rx="6" ry="4" fill="#dd8f6b" opacity=".45"/>
     </svg>
     <div class="brand">Вместе</div>
     <div class="tag">наш маленький лес</div>
@@ -307,13 +375,23 @@ footer{position:fixed;bottom:8px;width:100%;text-align:center;font-size:.78rem;c
     <p class="page-sub">наш общий лесной друг</p>
     <div class="card pet-stage">
       <svg class="pet" viewBox="0 0 120 120">
-        <ellipse cx="60" cy="72" rx="38" ry="40" fill="#c8d0d8"/>
-        <ellipse cx="60" cy="84" rx="26" ry="24" fill="#fff"/>
-        <path d="M42 34 L38 14 L52 30 Z M78 34 L82 14 L68 30 Z" fill="#c8d0d8"/>
-        <circle cx="50" cy="62" r="6" fill="#3f4a52"/><circle cx="70" cy="62" r="6" fill="#3f4a52"/>
-        <circle cx="48" cy="60" r="2" fill="#fff"/><circle cx="68" cy="60" r="2" fill="#fff"/>
-        <path d="M56 72 Q60 76 64 72" stroke="#3f4a52" stroke-width="2" fill="none" stroke-linecap="round"/>
-        <ellipse cx="45" cy="70" rx="5" ry="3" fill="#f29e8e" opacity=".5"/><ellipse cx="75" cy="70" rx="5" ry="3" fill="#f29e8e" opacity=".5"/>
+        <defs>
+          <radialGradient id="petb" cx="42%" cy="32%" r="72%">
+            <stop offset="0%" stop-color="#eef0ea"/><stop offset="60%" stop-color="#cdd5d2"/><stop offset="100%" stop-color="#a6b1ad"/>
+          </radialGradient>
+        </defs>
+        <g filter="url(#paintsoft)">
+          <path d="M42 34 L37 12 L53 30 Z M78 34 L83 12 L67 30 Z" fill="url(#petb)"/>
+          <ellipse cx="60" cy="72" rx="39" ry="41" fill="url(#petb)"/>
+          <ellipse cx="60" cy="84" rx="27" ry="25" fill="#f6f2e6"/>
+          <g stroke="#9aa39e" stroke-width="1.3" opacity=".55" fill="none" stroke-linecap="round">
+            <path d="M46 80 l3 4 l3 -4 M56 86 l3 4 l3 -4 M66 86 l3 4 l3 -4"/>
+          </g>
+        </g>
+        <ellipse cx="50" cy="62" rx="6" ry="6.5" fill="#2f3a37"/><ellipse cx="70" cy="62" rx="6" ry="6.5" fill="#2f3a37"/>
+        <circle cx="51.4" cy="60.4" r="1.6" fill="#fff"/><circle cx="71.4" cy="60.4" r="1.6" fill="#fff"/>
+        <path d="M56 72 Q60 76 64 72" stroke="#2f3a37" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <ellipse cx="45" cy="70" rx="5" ry="3" fill="#dd8f6b" opacity=".45"/><ellipse cx="75" cy="70" rx="5" ry="3" fill="#dd8f6b" opacity=".45"/>
       </svg>
       <h3 style="font-family:var(--serif)">Мохнатик</h3>
       <div style="max-width:280px;margin:14px auto 0">
@@ -440,13 +518,34 @@ function showPage(id,el){
     d.innerHTML=i+(events[i]?'<span class="ev">'+events[i]+'</span>':'');c.appendChild(d);}
 })();
 
-// ---- photos ----
+// ---- photos: painterly mini-landscapes (Ghibli watercolour scenes) ----
 (function(){
-  const grad=['#cfe6ff','#ffd7e0','#d8f0cf','#ffe9c2','#e7dcff','#cdeef0'];
-  const emo=['🌳','🌊','🏔️','🌅','🚂','🍜','🌸','🎐','🛶'];
+  // [skyTop, skyLow, hillFar, hillNear, sun?]
+  const scenes=[
+    ['#7fb0d4','#e9e6cf','#9bb27e','#5d7d4c',1],
+    ['#e7a778','#f3dcc0','#8a7d6a','#4f5e4c',1],
+    ['#5b88b0','#cfd9d0','#7d8a8c','#525e5f',0],
+    ['#9cc6dd','#eee9d6','#aec295','#6f8d54',1],
+    ['#caa0c0','#f0dccf','#8a7090','#5b5066',0],
+    ['#6fa6c0','#dfe7d0','#88a070','#46603a',1],
+    ['#f0c98a','#f6ecd2','#c0a86a','#7d6e44',1],
+    ['#6892b8','#d6dfe0','#6f8d80','#3f5e4c',0],
+    ['#b3cfe0','#efe9d6','#9fb87f','#5d7d4c',1]
+  ];
   const p=document.getElementById('photos');
-  for(let i=0;i<9;i++){const ph=document.createElement('div');ph.className='ph';
-    ph.innerHTML='<div style="background:'+grad[i%grad.length]+'">'+emo[i]+'</div>';p.appendChild(ph);}
+  scenes.forEach((s,i)=>{
+    const sun=s[4]?`<circle cx="78" cy="22" r="11" fill="#fff7df"/><circle cx="78" cy="22" r="17" fill="#fff2c8" opacity=".4"/>`:
+      `<g fill="#f6f2e6" opacity=".85"><ellipse cx="22" cy="20" rx="14" ry="8"/><ellipse cx="34" cy="16" rx="11" ry="9"/></g>`;
+    const ph=document.createElement('div');ph.className='ph';
+    ph.innerHTML=`<svg viewBox="0 0 100 100" preserveAspectRatio="none" style="width:100%;height:100%;display:block">
+      <defs><linearGradient id="sk${i}" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="${s[0]}"/><stop offset="100%" stop-color="${s[1]}"/></linearGradient></defs>
+      <rect width="100" height="100" fill="url(#sk${i})"/>${sun}
+      <path filter="url(#paintsoft)" fill="${s[2]}" opacity=".85" d="M0,62 C25,50 55,72 100,56 L100,100 L0,100 Z"/>
+      <path filter="url(#paintsoft)" fill="${s[3]}" d="M0,78 C30,66 60,86 100,74 L100,100 L0,100 Z"/>
+    </svg>`;
+    p.appendChild(ph);
+  });
 })();
 
 // auto-login if user stored
