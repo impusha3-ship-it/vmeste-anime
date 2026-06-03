@@ -43,6 +43,40 @@ body{
 /* anime vignette + light bloom */
 .vignette{position:fixed;inset:0;z-index:4;pointer-events:none;
   background:radial-gradient(120% 100% at 50% 36%, rgba(0,0,0,0) 55%, rgba(60,74,70,.16) 100%)}
+
+/* ====== NIGHT MODE ====== */
+.nightsky{position:fixed;inset:0;z-index:2;pointer-events:none;opacity:0;transition:opacity 1.6s ease;
+  background:
+    radial-gradient(70% 50% at 78% 18%, rgba(70,90,140,.5), rgba(70,90,140,0) 60%),
+    linear-gradient(180deg,#1b2347 0%,#2c3a66 38%,#4a5b83 66%,#6e7a86 100%);
+  mix-blend-mode:multiply}
+body.night .nightsky{opacity:.9}
+body.night .sun{opacity:0;transition:opacity 1.2s}
+body.night .rays{opacity:0!important}
+body.night .vignette{background:radial-gradient(120% 100% at 50% 30%,rgba(0,0,0,0) 45%,rgba(10,16,40,.5) 100%)}
+.moon{position:fixed;top:8%;right:12%;width:90px;height:90px;border-radius:50%;z-index:2;pointer-events:none;
+  background:radial-gradient(circle at 38% 36%,#fffdf2,#f3edcf 60%,#dcd6b4);
+  box-shadow:0 0 40px 10px rgba(255,250,220,.4);opacity:0;transform:scale(.6) translateY(20px);
+  transition:opacity 1.4s ease, transform 1.4s cubic-bezier(.2,.8,.2,1)}
+body.night .moon{opacity:1;transform:none}
+.stars{position:fixed;inset:0;z-index:2;pointer-events:none;opacity:0;transition:opacity 1.6s ease}
+body.night .stars{opacity:1}
+.star{position:absolute;background:#fff;border-radius:50%;animation:twinkle 3s ease-in-out infinite}
+@keyframes twinkle{0%,100%{opacity:.25;transform:scale(.7)}50%{opacity:1;transform:scale(1.1)}}
+/* fireflies */
+.firefly{position:fixed;z-index:4;width:7px;height:7px;border-radius:50%;pointer-events:none;opacity:0;
+  background:radial-gradient(circle,#fff7c4,#ffe27a 50%,rgba(255,226,122,0) 75%);
+  box-shadow:0 0 10px 3px rgba(255,226,122,.6);transition:opacity 1.4s}
+body.night .firefly{opacity:1;animation:fly 9s ease-in-out infinite, glow 2.4s ease-in-out infinite}
+@keyframes fly{0%{transform:translate(0,0)}25%{transform:translate(40px,-30px)}50%{transform:translate(-20px,-60px)}75%{transform:translate(30px,-20px)}100%{transform:translate(0,0)}}
+@keyframes glow{0%,100%{opacity:.3}50%{opacity:1}}
+body.night{color:#e8ecf2}
+body.night .card{background:linear-gradient(180deg,rgba(60,74,110,.5),rgba(40,52,84,.42));border-color:rgba(150,170,210,.35)}
+body.night .card h3,body.night .page-title{color:#cfe0ff}
+body.night .nav{background:rgba(28,36,66,.78);border-bottom-color:rgba(150,170,210,.25)}
+body.night .nav-tab{color:#aebbd6}
+body.night .muted{color:#9fb0cc}
+body.night input{background:rgba(40,52,84,.6);color:#e8ecf2;border-color:rgba(150,170,210,.35)}
 /* falling sakura petals */
 .petal{position:fixed;top:-6vh;z-index:4;pointer-events:none;width:16px;height:16px;
   background:radial-gradient(circle at 35% 30%,#ffe3ee,#f6b4cf 70%,#e88aa8);
@@ -352,6 +386,9 @@ footer{position:fixed;bottom:8px;width:100%;text-align:center;font-size:.78rem;c
 <div class="wash w1"></div><div class="wash w2"></div><div class="wash w3"></div>
 <div class="atmos"></div>
 <div class="rays"></div>
+<div class="nightsky"></div>
+<div class="moon"></div>
+<div class="stars" id="stars"></div>
 <div class="vignette"></div>
 <svg class="grain" preserveAspectRatio="none"><filter id="g"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="linear" slope="0.5"/></feComponentTransfer></filter><rect width="100%" height="100%" filter="url(#g)"/></svg>
 <!-- watercolour-paper fibre wash -->
@@ -463,6 +500,8 @@ footer{position:fixed;bottom:8px;width:100%;text-align:center;font-size:.78rem;c
   <div class="nav">
     <div class="nav-logo">О <em>&</em> Д</div>
     <div class="nav-tabs" id="tabs"></div>
+    <button class="icon-btn" id="music-btn" onclick="toggleMusic()" title="Мелодия">🎵</button>
+    <button class="icon-btn" id="night-btn" onclick="toggleNight()" title="День / Ночь">🌙</button>
     <button class="icon-btn" id="sound-btn" onclick="toggleSound()" title="Звук">🔊</button>
     <button class="icon-btn" onclick="logout()" title="Выйти">🚪</button>
   </div>
@@ -623,7 +662,94 @@ footer{position:fixed;bottom:8px;width:100%;text-align:center;font-size:.78rem;c
     p.style.transform='scale('+sc+')';p.style.opacity=(.55+Math.random()*.4);
     p.style.animationDuration=(9+Math.random()*9)+'s';p.style.animationDelay=(-Math.random()*18)+'s';
     document.body.appendChild(p);}
+  // stars
+  const st=document.getElementById('stars');
+  for(let i=0;i<90;i++){const s=document.createElement('div');s.className='star';
+    const sz=1+Math.random()*2.4;s.style.width=s.style.height=sz+'px';
+    s.style.left=(Math.random()*100)+'vw';s.style.top=(Math.random()*70)+'vh';
+    s.style.animationDelay=(-Math.random()*3)+'s';s.style.animationDuration=(2+Math.random()*3)+'s';
+    st.appendChild(s);}
+  // fireflies
+  for(let i=0;i<16;i++){const f=document.createElement('div');f.className='firefly';
+    f.style.left=(Math.random()*96)+'vw';f.style.top=(45+Math.random()*50)+'vh';
+    f.style.animationDelay=(-Math.random()*9)+'s,'+(-Math.random()*2.4)+'s';
+    const sc=.7+Math.random()*1.1;f.style.transform='scale('+sc+')';
+    document.body.appendChild(f);}
 })();
+
+// ====== PARALLAX SCROLL ======
+(function(){
+  const sky=document.querySelector('.sky'), hills=document.querySelector('.hills'),
+        w1=document.querySelector('.wash.w1'), w2=document.querySelector('.wash.w2'),
+        clouds=document.querySelectorAll('.cloud');
+  let ticking=false;
+  function upd(){
+    const y=window.scrollY||0;
+    if(hills)hills.style.transform='translateY('+(y*0.18)+'px)';
+    if(sky)sky.style.transform='translateY('+(y*0.05)+'px)';
+    if(w1)w1.style.marginTop=(y*-0.12)+'px';
+    if(w2)w2.style.marginTop=(y*-0.08)+'px';
+    clouds.forEach((c,i)=>{c.style.marginTop=(y*(0.06+i*0.02))+'px';});
+    ticking=false;
+  }
+  window.addEventListener('scroll',()=>{if(!ticking){requestAnimationFrame(upd);ticking=true;}},{passive:true});
+})();
+
+// ====== NIGHT MODE ======
+function toggleNight(){
+  const on=document.body.classList.toggle('night');
+  localStorage.setItem('anime_night',on?'on':'off');
+  const b=document.getElementById('night-btn');if(b)b.textContent=on?'☀️':'🌙';
+  if(typeof Snd!=='undefined')Snd.soft();
+}
+(function(){if(localStorage.getItem('anime_night')==='on'){document.body.classList.add('night');
+  const b=document.getElementById('night-btn');if(b)b.textContent='☀️';}})();
+
+// ====== BACKGROUND MELODY (Hisaishi-esque, procedural) ======
+const Music=(function(){
+  let ctx,master,playing=false,timer,step=0;
+  // gentle major pentatonic phrase (Hz), soft waltz feel
+  const notes=[523.25,587.33,659.25,783.99,659.25,587.33,
+               698.46,659.25,587.33,523.25,587.33,659.25,
+               783.99,880.00,783.99,659.25,587.33,523.25];
+  const bass=[130.81,164.81,196.00,164.81]; // C E G E
+  function ac(){if(!ctx){ctx=new (window.AudioContext||window.webkitAudioContext)();
+    master=ctx.createGain();master.gain.value=0;master.connect(ctx.destination);}return ctx;}
+  function voice(freq,dur,vol,type){
+    const o=ctx.createOscillator(),g=ctx.createGain();
+    o.type=type||'sine';o.frequency.value=freq;
+    const t=ctx.currentTime;g.gain.setValueAtTime(0,t);
+    g.gain.linearRampToValueAtTime(vol,t+.06);
+    g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+    o.connect(g).connect(master);o.start(t);o.stop(t+dur+.05);
+  }
+  function tick(){
+    voice(notes[step%notes.length],1.4,.16,'sine');           // melody
+    voice(notes[step%notes.length]*2,1.0,.04,'triangle');      // shimmer octave
+    if(step%2===0)voice(bass[(step/2)%bass.length|0],1.8,.12,'sine'); // soft bass
+    step++;
+  }
+  return {
+    start(){const a=ac();if(a.state==='suspended')a.resume();
+      master.gain.cancelScheduledValues(a.currentTime);
+      master.gain.linearRampToValueAtTime(.5,a.currentTime+1.2); // quiet overall
+      tick();timer=setInterval(tick,560);playing=true;},
+    stop(){if(!ctx)return;master.gain.linearRampToValueAtTime(0,ctx.currentTime+.8);
+      clearInterval(timer);playing=false;},
+    get playing(){return playing;}
+  };
+})();
+function toggleMusic(){
+  const b=document.getElementById('music-btn');
+  if(Music.playing){Music.stop();if(b)b.textContent='🎵';localStorage.setItem('anime_music','off');}
+  else{Music.start();if(b)b.textContent='🎶';localStorage.setItem('anime_music','on');}
+}
+// resume preferred music on first user gesture (autoplay policy)
+(function(){if(localStorage.getItem('anime_music')==='on'){
+  const go=()=>{Music.start();const b=document.getElementById('music-btn');if(b)b.textContent='🎶';
+    document.removeEventListener('click',go);};
+  document.addEventListener('click',go);
+}})();
 
 // ---- login ----
 const PASS='ghibli';
@@ -751,6 +877,7 @@ const Snd=(function(){
   return {
     click(){tone(523.25,.13,'sine',.12);setTimeout(()=>tone(783.99,.16,'sine',.09),28);}, // soft two-note pop
     soft(){tone(392,.16,'triangle',.1);},
+    tick(){tone(1244.5,.035,'sine',.05);},
     chime(){[523,659,784,1046].forEach((f,i)=>setTimeout(()=>tone(f,.5,'sine',.09),i*90));},
     toggle(){on=!on;localStorage.setItem('anime_sound',on?'on':'off');if(on)this.soft();return on;},
     get on(){return on;}
@@ -772,11 +899,12 @@ function countUp(el){
   if(raw==='∞'||el.dataset.done)return;
   const target=parseInt(raw.replace(/\D/g,''),10);
   if(isNaN(target))return;
-  el.dataset.done='1'; const dur=1100, t0=performance.now();
+  el.dataset.done='1'; const dur=1100, t0=performance.now(); let lastTick=0;
   (function step(now){
     const p=Math.min((now-t0)/dur,1);
     const e=1-Math.pow(1-p,3); // easeOutCubic
     el.textContent=Math.round(target*e).toLocaleString('ru-RU');
+    if(now-lastTick>70 && p<1 && typeof Snd!=='undefined'){Snd.tick();lastTick=now;}
     if(p<1)requestAnimationFrame(step);else el.textContent=target.toLocaleString('ru-RU');
   })(t0);
 }
